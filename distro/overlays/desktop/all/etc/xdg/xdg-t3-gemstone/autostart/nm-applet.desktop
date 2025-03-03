@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=nm-applet
+Comment=Show Network Manager in Xfce4 Panel
+Exec=dbus-launch nm-applet
+OnlyShowIn=XFCE;

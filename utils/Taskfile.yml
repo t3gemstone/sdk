@@ -1,0 +1,7 @@
+# T3 Foundation Gemstone Project [t3gemstone.org]
+# SPDX-License-Identifier: Apache-2.0
+# Do not abuse this file. Only tasks appealing to everyone should be added.
+
+version: '3'
+
+tasks:

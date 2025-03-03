@@ -1,0 +1,51 @@
+repositories:
+
+  yocto/poky:
+    type: git
+    url: https://git.yoctoproject.org/poky
+    version: 7dad83c7e5e9637c0ff5d5712409611fd4a14946
+
+  yocto/meta-ti:
+    type: git
+    url: git://git.ti.com/arago-project/meta-ti.git
+    version: 4213a71a8eaed4a57562c0608f9ba29efc39eede
+
+  yocto/meta-arm:
+    type: git
+    url: git://git.yoctoproject.org/meta-arm
+    version: a8fe9d22eaefc294f91096c6a32663e2f4ab3b10
+
+  yocto/openembedded-core:
+    type: git
+    url: https://git.openembedded.org/openembedded-core
+    version: 62cb12967391db709315820d48853ffa4c6b4740
+
+  yocto/meta-openembedded:
+    type: git
+    url: git://git.openembedded.org/meta-openembedded
+    version: dda0d53326017d6758ec6bdfdaf2f484c089d13f
+
+  yocto/meta-gemstone:
+    type: git
+    url: git@github.com:t3gemstone/meta-gemstone.git
+    version: aab9df4ad5cb383a4275d5263366066a959a82a6
+
+  yocto/meta-intel:
+    type: git
+    url: https://git.yoctoproject.org/meta-intel
+    version: 0be954e82f09d235d2b5e5ea01bb62ffa8d0b5f7
+
+  src/gem-tools:
+    type: git
+    url: git@github.com:t3gemstone/gem-tools.git
+    version: main
+
+  src/ti-img-rogue-umlibs:
+    type: git
+    url: https://git.ti.com/git/graphics/ti-img-rogue-umlibs.git
+    version: linuxws/kirkstone/k6.1/23.3.6512818
+
+  src/cc33xx-fw:
+    type: git
+    url: https://git.ti.com/git/cc33xx-wlan/cc33xx-fw.git
+    version: 988ded3a7d4d0e46de62e9ebfcb685c502bd9edf

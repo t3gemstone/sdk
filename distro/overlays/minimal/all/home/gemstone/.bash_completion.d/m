@@ -1,0 +1,28 @@
+# ~/.bash_comletion.d/m
+
+_m()
+{
+    local cur prev
+
+    COMPREPLY=()
+
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    if [[ "$prev" == "=" ]]; then
+        prev="${COMP_WORDS[COMP_CWORD - 2]}"
+    elif [[ "$cur" == "=" ]]; then
+        cur=""
+    fi
+
+    case "$cur" in
+        *)
+            COMPREPLY=( $(compgen -W "clr find grep mk size reload info" -- ${cur}) )
+            return 0
+        ;;
+    esac
+
+    return 0
+}
+
+complete -F _m m

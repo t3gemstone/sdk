@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+for i in ~/.bash_completion.d/*; do
+    . $i
+done

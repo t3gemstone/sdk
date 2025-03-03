@@ -1,0 +1,42 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+	{
+		"key": "alt+left",
+		"command": "-gitlens.key.alt+left",
+		"when": "gitlens:key:alt+left"
+	},
+	{
+		"key": "alt+left",
+		"command": "workbench.action.navigateBack"
+	},
+	{
+		"key": "ctrl+alt+-",
+		"command": "-workbench.action.navigateBack"
+	},
+	{
+		"key": "alt+right",
+		"command": "workbench.action.navigateForward"
+	},
+	{
+		"key": "ctrl+shift+-",
+		"command": "-workbench.action.navigateForward"
+	},
+	{
+		"key": "f12",
+		"command": "editor.action.peekDefinition",
+		"when": "editorHasDefinitionProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+	},
+	{
+		"key": "ctrl+shift+f10",
+		"command": "-editor.action.peekDefinition",
+		"when": "editorHasDefinitionProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+	},
+	{
+		"key": "ctrl+alt+`",
+		"command": "workbench.files.action.showActiveFileInExplorer"
+    },
+    {
+        "key": "alt+f11",
+        "command": "editor.action.indentationToSpaces"
+    }
+]

@@ -1,0 +1,13 @@
+[Desktop Entry]
+# Override desktop file in /usr/share/applications to hide from menu
+Hidden=true
+
+Version=1.1
+Type=Application
+Name=About Xfce
+Comment=Information about the Xfce Desktop Environment
+Icon=org.xfce.about
+OnlyShowIn=XFCE;
+Exec=xfce4-about
+Actions=
+Categories=Other;Utility;

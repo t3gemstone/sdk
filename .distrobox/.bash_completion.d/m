@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# Sdk Bash Helpers
+#
+
+_m()
+{
+    local cur prev
+
+    COMPREPLY=()
+
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    if [[ "$prev" == "=" ]]; then
+        prev="${COMP_WORDS[COMP_CWORD - 2]}"
+    elif [[ "$cur" == "=" ]]; then
+        cur=""
+    fi
+
+    case "$prev" in
+        "oeinit")
+            COMPREPLY=( $(compgen -W "beagley-ai intel-corei7-64" -- ${cur}) )
+            return 0
+        ;;
+    esac
+
+    case "$cur" in
+        *)
+            COMPREPLY=( $(compgen -W "clr find grep mk size oeinit" -- ${cur}) )
+            return 0
+        ;;
+    esac
+
+    return 0
+}
+
+complete -F _m m

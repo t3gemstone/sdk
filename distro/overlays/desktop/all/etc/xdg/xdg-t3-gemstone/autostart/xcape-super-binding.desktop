@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Application Menu Shortcut Fix
+Comment=Bind Super_L to Alt_L + Pause
+Exec=xcape -e 'Super_L=Alt_L|Pause'
+OnlyShowIn=XFCE;

@@ -1,0 +1,11 @@
+[Unit]
+Description=Configure system after first systemd init
+After=basic.target
+
+[Service]
+ExecStart=/usr/local/bin/gem-first-init
+Type=oneshot
+User=root
+
+[Install]
+WantedBy=multi-user.target

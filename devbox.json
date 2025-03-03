@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.7/.schema/devbox.schema.json",
+  "packages": [
+    "distrobox@latest",
+    "go-task@latest",
+    "vcstool@latest",
+    "qemu@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "source <(devbox completion $(basename $SHELL))",
+      "source <(task --completion $(basename $SHELL))",
+      "source $DEVBOX_PACKAGES_DIR/share/vcstool-completion/vcs.$(basename $SHELL)",
+      "export PS1='📦 devbox:\\[\\033[01;34m\\]\\W\\[\\033[00m\\]> '",
+      "WORKDIR=$DEVBOX_PROJECT_ROOT HOME=$DEVBOX_PROJECT_ROOT/.distrobox source $DEVBOX_PROJECT_ROOT/.distrobox/.bash_aliases",
+      "DEVBOX_ENV_FILE=$DEVBOX_PROJECT_ROOT/.devbox/.env",
+      "touch $DEVBOX_ENV_FILE && source $DEVBOX_ENV_FILE"
+    ]
+  }
+}

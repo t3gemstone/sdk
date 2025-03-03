@@ -1,0 +1,13 @@
+[Configuration]
+BackgroundDarkness=0.920000
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+ColorBackground=#131926
+ColorBold=#ffffff
+ColorBoldUseDefault=FALSE
+ColorCursor=#0f4999
+ColorForeground=#b7b7b7
+ColorPalette=#000000;#aa0000;#44aa44;#aa5500;#0039aa;#aa22aa;#1a92aa;#aaaaaa;#777777;#ff8787;#4ce64c;#ded82c;#295fcc;#cc58cc;#4ccce6;#ffffff
+ColorSelection=#163b59
+ColorSelectionUseDefault=FALSE
+FontName=JetBrains Mono 12
+TabActivityColor=#0f4999

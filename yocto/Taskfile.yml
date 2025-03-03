@@ -1,0 +1,51 @@
+# T3 Foundation Gemstone Project [t3gemstone.org]
+# SPDX-License-Identifier: Apache-2.0
+
+version: '3'
+
+vars:
+  TARGET: gemstone-image-rd
+  TEMPLATECONF: "{{ .WORKDIR }}/yocto/meta-gemstone/conf/templates/{{ .MACHINE }}/"
+  OE_INIT_CMD: TEMPLATECONF={{ .TEMPLATECONF }} source {{ .WORKDIR }}/yocto/poky/oe-init-build-env {{ .YOCTO_BUILD_DIR }} && cd {{ .WORKDIR }}
+  QEMU_KERNEL_BIN: '{{ .WORKDIR }}/build/tmp-musl/deploy/images/intel-corei7-64/bzImage'
+  QEMU_DISK_FILE: '{{ .IMG_FILE_PATH }}'
+
+tasks:
+
+  build:
+    cmds:
+      - bash -c "{{ .OE_INIT_CMD }} && bitbake {{ .TARGET }}"
+
+  local-apt-server:
+    cmds: 
+      - pkill -f "python3 -m http.server" &>/dev/null || true
+      - bash -c "{{ .OE_INIT_CMD }} && bitbake package-index"
+      - bash -c "cd {{ .WORKDIR }}/build/tmp-musl/deploy/deb && python3 -m http.server 2>/dev/null" &
+
+  runqemu:
+    preconditions:
+    - sh: 'test -f {{ .QEMU_KERNEL_BIN }}'
+      msg: "{{ .QEMU_KERNEL_BIN }} Image not found. Run <task yocto:build MACHINE=intel-corei7-64>"
+    - sh: 'test -f {{ .QEMU_DISK_FILE }}'
+      msg: "{{ .QEMU_DISK_FILE }} Image not found. Run <task distro:build MACHINE=intel-corei7-64>"
+    cmds:
+      - qemu-system-x86_64
+          -enable-kvm
+          -machine pc
+          -cpu host
+          -m 4G
+          -smp $(nproc)
+          -netdev user,id=net0,hostfwd=tcp::10022-:22
+          -device virtio-net-pci,netdev=net0,mac=52:54:00:12:34:02
+          -object rng-random,filename=/dev/urandom,id=rng0
+          -device virtio-rng-pci,rng=rng0
+          -device virtio-blk-pci,drive=disk0
+          -drive id=disk0,file="{{ .QEMU_DISK_FILE }}",format=raw,if=none
+          -device qemu-xhci
+          -device usb-tablet
+          -device usb-kbd
+          -device virtio-gpu-pci
+          -serial mon:stdio
+          -vga virtio
+          -kernel "{{ .QEMU_KERNEL_BIN }}"
+          -append 'root=/dev/vda2 rw init_fatal_sh=1 loglevel=4'

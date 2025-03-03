@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Sleep first for shortcut to work
+sleep 0.2
+/usr/bin/xfce4-panel --plugin-event=applicationsmenu:popup:bool:false

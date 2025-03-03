@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-appfinder" version="1.0">
+  <property name="actions" type="array">
+    <value type="int" value="1"/>
+    <value type="int" value="2"/>
+    <value type="int" value="3"/>
+    <value type="int" value="4"/>
+    <value type="int" value="5"/>
+    <property name="action-1" type="empty">
+      <property name="type" type="int" value="0"/>
+      <property name="pattern" type="string" value="/"/>
+      <property name="command" type="string" value="exo-open --launch FileManager %S"/>
+      <property name="save" type="bool" value="false"/>
+    </property>
+    <property name="action-2" type="empty">
+      <property name="type" type="int" value="0"/>
+      <property name="pattern" type="string" value="#"/>
+      <property name="command" type="string" value="exo-open --launch TerminalEmulator man %s"/>
+      <property name="save" type="bool" value="false"/>
+    </property>
+    <property name="action-3" type="empty">
+      <property name="type" type="int" value="0"/>
+      <property name="pattern" type="string" value="!g"/>
+      <property name="command" type="string" value="exo-open --launch WebBrowser http://www.google.com/search?q=%s"/>
+      <property name="save" type="bool" value="false"/>
+    </property>
+    <property name="action-4" type="empty">
+      <property name="type" type="int" value="0"/>
+      <property name="pattern" type="string" value="!ddg"/>
+      <property name="command" type="string" value="exo-open --launch WebBrowser http://www.duckduckgo.com/?q=%s"/>
+      <property name="save" type="bool" value="false"/>
+    </property>
+    <property name="action-5" type="empty">
+      <property name="type" type="int" value="0"/>
+      <property name="pattern" type="string" value="$"/>
+      <property name="command" type="string" value="exo-open --launch TerminalEmulator %s"/>
+      <property name="save" type="bool" value="true"/>
+    </property>
+  </property>
+  <property name="hide-category-pane" type="bool" value="true"/>
+  <property name="always-center" type="bool" value="true"/>
+</channel>

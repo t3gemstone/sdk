@@ -1,0 +1,7 @@
+# Set default environment vars in T3 Gemstone
+if [ "$DESKTOP_SESSION" = "t3-gemstone" ]; then
+    # Disable GTK 3.16 overlay scrollbars
+    export GTK_OVERLAY_SCROLLING=0
+    # QT5 apps to use GTK style
+    export QT_QPA_PLATFORMTHEME=gtk2
+fi

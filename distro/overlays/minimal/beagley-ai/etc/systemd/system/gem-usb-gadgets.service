@@ -1,0 +1,11 @@
+[Unit]
+Description=Use USB as TTY, Ethernet, Mass Storage
+After=basic.target
+
+[Service]
+ExecStart=/usr/local/bin/gem-usb-gadgets
+Type=oneshot
+User=root
+
+[Install]
+WantedBy=multi-user.target

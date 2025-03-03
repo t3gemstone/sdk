@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=Search...
+Comment=Search and run applications
+Icon=system-search
+Exec=xfce4-appfinder
+Categories=X-XFCE;X-Xfce-Toplevel;
+StartupNotify=true

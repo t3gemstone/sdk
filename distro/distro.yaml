@@ -1,0 +1,295 @@
+{{/* https://github.com/go-debos/debos */}}
+{{/* https://github.com/go-debos/debos-recipes */}}
+{{/* https://pkg.go.dev/github.com/go-debos/debos/actions */}}
+{{/* https://golang.org/pkg/text/template */}}
+
+{{- $arch := or .arch "arm64" -}}
+{{- $machine := or .machine "beagley-ai" -}}
+{{- $base := or .base "ubuntu" -}}
+{{- $type := or .type "minimal" -}}
+{{- $suite := or .suite "jammy" -}}
+{{- $release := or .release "v2025.0" -}}
+{{- $workdir := or .workdir "/home/workdir" -}}
+{{- $image := or .image (printf "gemstone-%s-%s-%s-%s-%s.img" $type $release $base $suite $machine) -}}
+{{- $imagepath := or .imagepath (printf "%s/build/debos/%s" $workdir $image) -}}
+{{- $imagesize := or .imagesize "4096M" -}}
+
+architecture: {{ $arch }}
+
+actions:
+
+  - action: debootstrap
+    suite: {{ $suite }}
+    variant: minbase
+    keyring-file: /usr/share/keyrings/{{ $base }}-archive-keyring.gpg
+{{ if eq $base "debian" }}
+    components: [ main, contrib ]
+    mirror: https://deb.debian.org/debian
+{{ else }}
+    components: [ main, multiverse, universe ]
+    mirror: {{ if eq $arch "amd64" }}'https://archive.ubuntu.com/ubuntu'{{ else }}'https://ports.ubuntu.com/ubuntu-ports'{{ end }}
+{{ end }}
+
+  - action: apt
+    recommends: false
+    packages:
+      - apt-utils
+      - bash-completion
+      - console-setup
+      - coreutils
+      - curl
+      - dialog
+      - file
+      - fuse
+      - gawk
+      - gpg
+      - htop
+      - hwinfo
+      - iputils-ping
+      - isc-dhcp-client
+      - kmod
+      - less
+      - locales
+      - mc
+      - nano
+      - network-manager
+      - openssh-server
+      - openssl
+      - python3
+      - sudo
+      - systemd
+      - tar
+      - tree
+      - udev
+      - unzip
+      - wget
+      - wpasupplicant
+      - zip
+
+{{ if eq $suite "jammy" }}
+  - action: apt
+    recommends: false
+    packages: [ iwd, systemd-timesyncd ]
+{{ end }}
+
+{{ if eq $suite "noble" }}
+  - action: apt
+    recommends: false
+    packages: [ iwd, systemd-resolved, systemd-timesyncd ]
+{{ end }}
+
+{{ if eq $type "gui" }}
+  - action: apt
+    recommends: true
+    packages: 
+      - libdrm-dev
+      - libqt5core5a
+{{ end }}
+
+{{ if eq $type "desktop" }}
+  - action: apt
+    recommends: true
+    packages:
+      - at-spi2-core
+      - atril
+      - dmz-cursor-theme
+      - language-pack-gnome-tr
+      - language-pack-tr
+      - libxfce4ui-utils
+      - lightdm
+      - lightdm-gtk-greeter
+      - mousepad
+      - network-manager
+      - parole
+      - ristretto
+      - software-properties-common
+      - thunar
+      - thunar-archive-plugin
+      - whiptail
+      - xcape
+      - xfce4-appfinder
+      - xfce4-indicator-plugin
+      - xfce4-panel
+      - xfce4-pulseaudio-plugin
+      - xfce4-session
+      - xfce4-settings
+      - xfce4-taskmanager
+      - xfce4-terminal
+      - xfce4-xkb-plugin
+      - xfconf
+      - xfdesktop4
+      - xfwm4
+
+  - action: apt
+    recommends: false
+    packages:
+      - baobab
+      - engrampa
+      - language-selector-gnome
+      - libdrm-dev
+      - mate-calc
+      - network-manager-gnome
+
+{{ if eq $suite "jammy" "noble" }}
+  - action: apt
+    recommends: false
+    packages: 
+      - fonts-jetbrains-mono
+      - fonts-noto-core
+{{ end }}
+
+{{ end }}
+
+  - action: run
+    description: Setup host
+    chroot: true
+    command: |
+      echo "{{ $machine }}" >/etc/hostname
+      echo "127.0.0.1	localhost {{ $machine }}" >/etc/hosts
+
+  - action: run
+    description: Change distro issue message
+    chroot: true
+    command: |
+      MSG="Gemstone {{ $type }}:{{ $release }}"
+      echo "$MSG" >/etc/issue.net
+      echo "$MSG\n" >/etc/issue
+
+  - action: run
+    chroot: true
+    script: scripts/all/setup-user.sh
+
+  - action: overlay
+    source: overlays/minimal/all
+    destination: /
+
+  - action: overlay
+    source: overlays/minimal/{{ $machine }}
+    destination: /
+
+  - action: run
+    chroot: true
+    script: scripts/all/install-local-apt.sh {{ $machine }} {{ $type }}
+
+  - action: run
+    chroot: true
+    script: scripts/{{ $machine }}/install-local-apt.sh {{ $machine }} {{ $type }}
+
+{{ if eq $machine "beagley-ai" }}
+  - action: run
+    chroot: true
+    script: scripts/beagley-ai/setup-bootfiles.sh
+
+  - action: run
+    chroot: false
+    script: scripts/beagley-ai/install-dtbs.sh {{ $workdir }} $ROOTDIR
+
+  - action: run
+    chroot: false
+    script: scripts/beagley-ai/install-firmware.sh {{ $workdir }} $ROOTDIR
+{{ end }}
+
+{{ if eq $type "gui" "desktop" }}
+  - action: overlay
+    source: overlays/{{ $type }}/all
+    destination: /
+
+  - action: overlay
+    source: overlays/{{ $type }}/{{ $machine }}
+    destination: /
+
+  - action: run
+    description: Create icon cache
+    chroot: true
+    command: gtk-update-icon-cache /usr/share/icons/PiXflat
+{{ end }}
+
+{{ if eq $type "desktop" }}
+  - action: run
+    chroot: true
+    script: scripts/custom/install-firefox.sh
+
+  - action: run
+    chroot: true
+    script: scripts/custom/install-vscode.sh
+{{ end }}
+
+{{ if eq $type "gui" }}
+  - action: run
+    chroot: true
+    script: scripts/custom/install-gui-demo.sh
+{{ end }}
+
+  - action: run
+    chroot: true
+    script: scripts/all/setup-permissions.sh {{ $type }}
+
+  - action: run
+    chroot: true
+    script: scripts/all/setup-networking.sh {{ $machine }} {{ $suite }}
+
+  - action: run
+    chroot: true
+    script: scripts/all/disable-services.sh {{ $type }}
+
+  - action: run
+    chroot: true
+    script: scripts/all/setup-services.sh
+
+  - action: run
+    chroot: true
+    script: scripts/{{ $machine }}/setup-services.sh
+
+  - action: run
+    chroot: true
+    script: scripts/{{ $machine }}/clean-up.sh {{ $type }}
+
+  - action: run
+    chroot: true
+    script: scripts/all/clean-up.sh {{ $type }}
+
+  - action: image-partition
+    imagename: {{ $image }}
+    imagesize: {{ $imagesize }}
+{{ if eq $machine "beagley-ai" }}
+    partitiontype: msdos
+    mountpoints:
+      - mountpoint: /
+        partition: root
+      - mountpoint: /boot
+        partition: BOOT
+    partitions:
+      - name: BOOT
+        fs: vfat
+        start: 1MiB
+        end: 129MiB
+        extendedoptions: [-g, 16/32, -h, 0]
+        flags: [boot, lba]
+        parttype: 0C
+      - name: root
+        fs: btrfs
+        start: 129MiB
+        end: 100%
+        parttype: 83
+{{ else if eq $arch "amd64" }}
+    partitiontype: gpt
+    partitions:
+      - name: efi
+        fs: vfat
+        start: 0%
+        end: 50MB
+        options: [ x-systemd.automount ]
+      - name: root
+        fs: ext4
+        start: 50MB
+        end: 100%
+    mountpoints:
+      - mountpoint: /
+        partition: root
+      - mountpoint: /boot/efi
+        partition: efi
+        flags: [ boot ]
+{{ end }}
+
+  - action: filesystem-deploy
+    description: Deploying filesystem onto image

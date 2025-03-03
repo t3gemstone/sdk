@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=T3 Gemstone Session
+Name[tr]=T3 Gemstone Oturumu
+Exec=startxfce4
+Icon=t3-gemstone
+Type=Application
+DesktopNames=XFCE

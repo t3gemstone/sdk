@@ -1,0 +1,20 @@
+@import url("gtk-contained.css");
+@import url("gtk-colours.css");
+
+window, window:backdrop, decoration, decoration:backdrop, dialog, dialog:backdrop, headerbar, headerbar:backdrop {
+  border-radius: 0;
+}
+
+dialog > decoration, dialog > decoration:backdrop, window > decoration, window > decoration:backdrop {
+  box-shadow: 0 0 0 1px black;
+  border: 3px solid @theme_selected_bg_color;
+}
+
+window.maximized, window.csd, window.ssd, window.csd.popup, window.csd.dialog.message, window.solid-csd, window.popup {
+  border: 3px solid @theme_selected_bg_color;
+}
+
+headerbar:backdrop, headerbar:backdrop.titlebar button:backdrop {
+  color: @theme_selected_fg_color;
+  background: @theme_selected_bg_color;
+}

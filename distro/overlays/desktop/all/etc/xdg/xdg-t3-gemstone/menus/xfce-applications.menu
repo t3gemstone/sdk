@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Menu
+  PUBLIC '-//freedesktop//DTD Menu 1.0//EN'
+  'http://standards.freedesktop.org/menu-spec/menu-1.0.dtd'>
+
+<Menu>
+	<Name>Xfce</Name>
+
+	<DefaultAppDirs />
+	<DefaultDirectoryDirs />
+	<DefaultMergeDirs />
+
+	<Include>
+		<Category>X-Xfce-Toplevel</Category>
+	</Include>
+
+	<MergeFile type="parent">/etc/xdg/menus/xfce-applications.menu</MergeFile>
+
+	<Layout>
+		<Filename>org.t3-gemstone.search.desktop</Filename>
+		<Separator />
+		<Separator />
+		<Menuname>Accessories</Menuname>
+		<Menuname>Development</Menuname>
+		<Menuname>Education</Menuname>
+		<Menuname>Games</Menuname>
+		<Menuname>Graphics</Menuname>
+		<Menuname>Network</Menuname>
+		<Menuname>Multimedia</Menuname>
+		<Menuname>Office</Menuname>
+		<Menuname>Other</Menuname>
+		<Menuname>System</Menuname>
+		<Separator />
+		<Menuname>Settings</Menuname>
+		<Separator />
+		<Separator />
+		<Filename>org.t3-gemstone.log-out.desktop</Filename>
+	</Layout>
+
+	<Menu>
+		<Name>Accessories</Name>
+		<Directory>xfce-accessories.directory</Directory>
+    <Exclude>
+      <Or>
+        <Filename>thunar-bulk-rename.desktop</Filename>
+        <Filename>thunar.desktop</Filename>
+        <Filename>xfce4-taskmanager.desktop</Filename>
+      </Or>
+    </Exclude>
+	</Menu>
+
+	<Menu>
+		<Name>Development</Name>
+		<Directory>xfce-development.directory</Directory>
+	</Menu>
+
+	<Menu>
+		<Name>Education</Name>
+		<Directory>xfce-education.directory</Directory>
+	</Menu>
+
+	<Menu>
+		<Name>Games</Name>
+		<Directory>xfce-games.directory</Directory>
+	</Menu>
+
+	<Menu>
+		<Name>Graphics</Name>
+		<Directory>xfce-graphics.directory</Directory>
+	</Menu>
+
+	<Menu>
+		<Name>Network</Name>
+		<Directory>xfce-network.directory</Directory>
+    <Exclude>
+      <Or>
+        <Filename>firefox.desktop</Filename>
+      </Or>
+    </Exclude>
+	</Menu>
+
+	<Menu>
+		<Name>Multimedia</Name>
+		<Directory>xfce-multimedia.directory</Directory>
+	</Menu>
+
+	<Menu>
+		<Name>Office</Name>
+		<Directory>xfce-office.directory</Directory>
+	</Menu>
+
+	<Menu>
+		<Name>Other</Name>
+		<Directory>xfce-other.directory</Directory>
+	</Menu>
+
+	<Menu>
+		<Name>System</Name>
+		<Directory>xfce-system.directory</Directory>
+    <Exclude>
+      <Or>
+        <Filename>thunar.desktop</Filename>
+        <Filename>thunar-bulk-rename.desktop</Filename>
+        <Filename>xfce4-terminal.desktop</Filename>
+      </Or>
+    </Exclude>
+	</Menu>
+
+	<Menu>
+		<Name>Settings</Name>
+		<Directory>xfce-settings.directory</Directory>
+	</Menu>
+
+</Menu>

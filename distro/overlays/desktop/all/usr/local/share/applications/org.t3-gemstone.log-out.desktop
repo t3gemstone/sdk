@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=Log Out...
+Comment=Log out, restart, shutdown and switch user
+Icon=system-log-out
+Exec=xfce4-session-logout
+Categories=X-XFCE;X-Xfce-Toplevel;

@@ -1,0 +1,91 @@
+# T3 Foundation Gemstone Project [t3gemstone.org]
+# SPDX-License-Identifier: Apache-2.0
+
+version: '3'
+
+includes:
+  yocto:
+    taskfile: ../yocto
+    internal: true
+
+tasks:
+
+  permissions:
+    internal: true
+    cmds:
+      - sudo mkdir -p {{ .IMG_DEPLOY_DIR }}
+      - sudo chown $USER:$USER {{ .IMG_DEPLOY_DIR }}
+      - chmod +x {{ .WORKDIR }}/distro/scripts/*/*.sh
+
+  build:
+    cmds:
+      - task: permissions
+      - task: yocto:local-apt-server
+      - sudo mkdir -p /run/debos
+      - cd /run/debos && 
+          sudo debos 
+            --disable-fakemachine
+            --debug-shell
+            --artifactdir={{ .IMG_DEPLOY_DIR }}
+            --scratchdir={{ .IMG_DEPLOY_DIR }}
+            --rootdir=/run/debos
+            --template-var="workdir:{{ .WORKDIR }}"
+            --template-var="machine:{{ .MACHINE }}"
+            --template-var="base:{{ .DISTRO_BASE }}"
+            --template-var="type:{{ .DISTRO_TYPE }}"
+            --template-var="suite:{{ .DISTRO_SUITE }}"
+            --template-var="release:{{ .IMG_RELEASE }}"
+            --template-var="image:{{ .IMG_FILE_NAME }}"
+            --template-var="imagepath:{{ .IMG_FILE_PATH }}"
+            --template-var="imagesize:{{ .IMG_SIZE }}"
+            --template-var="arch:{{ .DISTRO_ARCH }}"
+            {{ .WORKDIR }}/distro/distro.yaml 2>&1 | tee -a {{ .IMG_DEPLOY_DIR }}/log.txt
+      - sudo chown $USER:$USER {{ .IMG_FILE_PATH }}*
+    requires:
+      vars:
+        - name: MACHINE
+          enum: [ beagley-ai, intel-corei7-64 ]
+        - name: DISTRO_BASE
+          enum: [ ubuntu, debian ]
+        - name: DISTRO_TYPE
+          enum: [ minimal, gui, desktop ]
+        - name: DISTRO_ARCH
+          enum: [ arm64, amd64 ]
+        - name: DISTRO_SUITE
+          enum: 
+            - bionic    # Ubuntu 18
+            - focal     # Ubuntu 20
+            - jammy     # Ubuntu 22
+            - noble     # Ubuntu 24
+            - buster    # Debian 10
+            - bullseye  # Debian 11
+            - bookworm  # Debian 12
+
+  build:all:ubuntu:
+    cmds:
+      - for:
+          matrix:
+            SUITE: [ "bionic", "focal", "jammy", "noble" ]
+            TYPE: [ "minimal", "gui", "desktop" ]
+        cmd: |
+          unset MACHINE
+          task distro:build MACHINE={{.MACHINE}} DISTRO_ARCH=arm64 DISTRO_BASE=ubuntu DISTRO_TYPE={{.ITEM.TYPE}} DISTRO_SUITE={{.ITEM.SUITE}}
+
+  build:all:debian:
+    cmds:
+      - for:
+          matrix:
+            SUITE: [ "buster", "bullseye", "bookworm" ]
+            TYPE: [ "minimal", "gui", "desktop" ]
+        cmd: |
+          unset MACHINE
+          task distro:build MACHINE={{.MACHINE}} DISTRO_ARCH=arm64 DISTRO_BASE=debian DISTRO_TYPE={{.ITEM.TYPE}} DISTRO_SUITE={{.ITEM.SUITE}}
+
+  build:all:
+    desc: Build every machine and distro
+    cmds:
+      - for:
+          matrix:
+            DISTRO: [ "ubuntu", "debian" ]
+            MACHINE: [ "beagley-ai", "intel-corei7-64" ]
+        cmd: 'task distro:build:all:{{.ITEM.DISTRO}} MACHINE={{.ITEM.MACHINE}}'

@@ -1,0 +1,72 @@
+# T3 Foundation Gemstone Project [t3gemstone.org]
+# SPDX-License-Identifier: Apache-2.0
+
+version: '3'
+
+vars:
+  WORKDIR: '{{ .WORKDIR | default "/home/workdir" }}'
+  MACHINE: '{{ .MACHINE | default "beagley-ai" }}'
+  DISTRO_TYPE: '{{ .DISTRO_TYPE | default "minimal" }}'
+  DISTRO_BASE: '{{ .DISTRO_BASE | default "ubuntu" }}'
+  DISTRO_SUITE: '{{ .DISTRO_SUITE | default "jammy" }}'
+  DISTRO_ARCH: '{{ .DISTRO_ARCH | default "arm64" }}'
+  IMG_RELEASE: '{{ .IMG_RELEASE | default "v2025.7" }}'
+  IMG_SIZE: '{{ .IMG_SIZE | default "4096M" }}'
+  IMG_DEPLOY_DIR: '{{ .WORKDIR }}/build/debos'
+  IMG_FILE_NAME: 'gemstone-{{ .DISTRO_TYPE }}-{{ .IMG_RELEASE }}-{{ .DISTRO_BASE }}-{{ .DISTRO_SUITE }}-{{ .MACHINE }}.img'
+  IMG_FILE_PATH: '{{ .IMG_DEPLOY_DIR }}/{{ .IMG_FILE_NAME }}'
+  YOCTO_BUILD_DIR: '{{ .WORKDIR }}/build/{{ .MACHINE }}'
+
+includes:
+  yocto: yocto
+  distro: distro
+  utils: utils
+
+tasks:
+
+  default:
+    silent: true
+    cmds:
+      - task --list-all --summary
+      - echo -e "\nEnvironment:\n"
+      - echo "  WORKDIR          = '{{ .WORKDIR }}'"
+      - echo "  MACHINE          = '{{ .MACHINE }}'"
+      - echo "  DISTRO_TYPE      = '{{ .DISTRO_TYPE }}'"
+      - echo "  DISTRO_BASE      = '{{ .DISTRO_BASE }}'"
+      - echo "  DISTRO_SUITE     = '{{ .DISTRO_SUITE }}'"
+      - echo "  DISTRO_ARCH      = '{{ .DISTRO_ARCH }}'"
+      - echo "  IMG_RELEASE      = '{{ .IMG_RELEASE }}'"
+      - echo "  IMG_FILE_NAME    = '{{ .IMG_FILE_NAME }}'"
+      - echo "  IMG_DEPLOY_DIR   = '{{ .IMG_DEPLOY_DIR }}'"
+      - echo "  IMG_FILE_PATH    = '{{ .IMG_FILE_PATH }}'"
+      - echo "  YOCTO_BUILD_DIR  = '{{ .YOCTO_BUILD_DIR }}'"
+      - echo ""
+
+  fetch:
+    cmds:
+      - vcs import . < repos.yml
+
+  permissions:
+    desc: It will give permission to distrobox's image to able to build yocto
+    cmds:
+      - sudo cp .meta/bitbake-apparmor.conf /etc/apparmor.d/bitbake
+      - sudo apparmor_parser -r /etc/apparmor.d/bitbake
+      - git config --global http.postBuffer 157286400
+      - mkdir -p build src
+
+  box:
+    desc: Enter Distrobox's Ubuntu 22.04 image to build yocto&distro
+    cmds:
+      - distrobox-list | grep -q 'gemstone-sdk' || docker build -f Dockerfile -t gemstone-sdk:latest .
+      - distrobox-assemble create --file distrobox.ini
+      - distrobox-enter --additional-flags "--tty" --name gemstone-sdk --no-workdir
+
+  destroy:
+    prompt: This is a dangerous command... Do you want to continue?
+    desc: Destroy everything including docker images, distrobox etc.
+    cmds:
+      - distrobox stop gemstone-sdk --yes || true
+      - distrobox rm gemstone-sdk --force || true
+      - sudo docker stop gemstone-sdk || true
+      - sudo docker rmi gemstone-sdk || true
+      - sudo docker system prune || true

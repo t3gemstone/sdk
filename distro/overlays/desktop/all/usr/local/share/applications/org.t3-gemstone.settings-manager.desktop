@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Exec=xfce4-settings-manager
+Icon=applications-system
+StartupNotify=true
+Terminal=false
+Categories=Settings
+OnlyShowIn=XFCE;
+Name=Settings Manager
+Name[tr]=Ayar Yöneticisi
+Comment=Manage system settings
+Comment[tr]=Sistem ayarlarını yönetin

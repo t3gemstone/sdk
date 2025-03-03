@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=Keyboard Layout
+Comment=Change system default keyboard layout, affects login manager
+Icon=preferences-desktop-keyboard
+Exec=set-default-keyboard-layout
+Terminal=true
+Categories=Settings

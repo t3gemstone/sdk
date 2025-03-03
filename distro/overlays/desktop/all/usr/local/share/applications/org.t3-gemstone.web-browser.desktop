@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Exec=exo-open --launch WebBrowser %u
+Icon=web-browser
+StartupNotify=true
+Terminal=false
+Categories=Network;
+OnlyShowIn=XFCE;
+X-XFCE-MimeType=x-scheme-handler/http;x-scheme-handler/https;
+X-AppStream-Ignore=True
+Name=Web Browser
+Name[tr]=İnternet Tarayıcısı
+Comment=Browse the web
+Comment[tr]=Web'de gezin
