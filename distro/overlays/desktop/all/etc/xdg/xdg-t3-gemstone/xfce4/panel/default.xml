@@ -75,6 +75,7 @@
     <property name="plugin-7" type="string" value="launcher">
       <property name="items" type="array">
         <value type="string" value="org.xfce.mousepad.desktop"/>
+        <value type="string" value="mousepad.desktop"/>
       </property>
     </property>
     <property name="plugin-8" type="string" value="launcher">

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Icon=preferences-desktop-keyboard
+Exec=set-system-keyboard-layout
+Terminal=true
+Categories=Settings
+Name=Keyboard Layout
+Name[tr]=Klavye Düzeni
+Comment=Change system keyboard layout
+Comment[tr]=Sistem klavye düzenini değiştir

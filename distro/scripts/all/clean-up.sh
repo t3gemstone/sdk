@@ -7,14 +7,14 @@ DISTRO_TYPE="${1:-minimal}"
 if [[ "$DISTRO_TYPE" == "desktop" ]]; then
     echo "apt-get purge"
 
-    apt-get purge -y \
-        elementary-xfce-icon-theme \
-        gnome-accessibility-themes \
-        gnome-themes-extra \
-        humanity-icon-theme \
-        ubuntu-wallpapers \
-        xarchiver \
-        xfce4-screensaver
+    apt-get purge -y elementary-xfce-icon-theme \
+    && apt-get purge -y gnome-accessibility-themes \
+    && apt-get purge -y gnome-themes-extra \
+    && apt-get purge -y humanity-icon-theme \
+    && apt-get purge -y ibus \
+    && apt-get purge -y ubuntu-wallpapers \
+    && apt-get purge -y xarchiver \
+    && apt-get purge -y xfce4-screensaver
 
     rm /usr/share/xsessions/xfce.desktop
     rm /etc/xdg/autostart/xscreensaver.desktop

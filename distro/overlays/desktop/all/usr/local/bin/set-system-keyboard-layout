@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+whiptail \
+    --title "Set System Keyboard Layout" \
+    --yesno "You need root permissions to change the system keyboard layout." \
+    --yes-button "Continue" --no-button "Cancel" \
+    10 78
+
+exitstatus=$?
+if [ $exitstatus -ne 0 ]; then
+    exit $exitstatus
+fi
+
+# GUI password prompt
+pkexec bash << 'EOF'
+dpkg-reconfigure keyboard-configuration \
+&& whiptail \
+    --title "Set System Keyboard Layout" \
+    --msgbox "You must restart your computer to apply the layout change." \
+    10 78
+EOF

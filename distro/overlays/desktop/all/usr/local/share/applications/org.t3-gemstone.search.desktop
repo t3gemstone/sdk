@@ -1,9 +1,12 @@
 [Desktop Entry]
 Version=1.1
 Type=Application
-Name=Search...
-Comment=Search and run applications
 Icon=system-search
 Exec=xfce4-appfinder
 Categories=X-XFCE;X-Xfce-Toplevel;
+OnlyShowIn=XFCE;
 StartupNotify=true
+Name=Search...
+Name[tr]=Ara...
+Comment=Search and run applications
+Comment[tr]=Uygulama listesinde arama yap ve uygulamayı çalıştır

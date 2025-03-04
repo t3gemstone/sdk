@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+whiptail \
+    --title "Set System Language" \
+    --yesno "You need root permissions to change the system language." \
+    --yes-button "Continue" --no-button "Cancel" \
+    10 78
+
+exitstatus=$?
+if [ $exitstatus -ne 0 ]; then
+    exit $exitstatus
+fi
+
+# GUI password prompt
+pkexec bash << 'EOF'
+whiptail \
+    --title "Set System Language" \
+    --msgbox "\
+Select locales you want to install with <Space>.\n\
+Press <Enter> when you are done.\n\n\
+You can check language codes from: https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes" \
+    15 78 \
+&& dpkg-reconfigure locales \
+&& whiptail \
+    --title "Set System Language" \
+    --msgbox "You must restart your computer to apply the language change." \
+    10 78
+EOF

@@ -17,9 +17,9 @@ fi
 systemctl enable NetworkManager
 
 # DNS resolving
-systemctl enable systemd-resolved
+if [[ "$DISTRO_SUITE" == "noble" || "$DISTRO_SUITE" == "bookworm" ]]; then
+    systemctl enable systemd-resolved
+fi
 
 # NTP client
-if [[ "$DISTRO_SUITE" == "jammy" || "$DISTRO_SUITE" == "noble" ]]; then
-    systemctl enable systemd-timesyncd
-fi
+systemctl enable systemd-timesyncd

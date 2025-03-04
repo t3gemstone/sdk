@@ -53,11 +53,8 @@ tasks:
           enum: [ arm64, amd64 ]
         - name: DISTRO_SUITE
           enum: 
-            - bionic    # Ubuntu 18
-            - focal     # Ubuntu 20
             - jammy     # Ubuntu 22
             - noble     # Ubuntu 24
-            - buster    # Debian 10
             - bullseye  # Debian 11
             - bookworm  # Debian 12
 
@@ -65,7 +62,7 @@ tasks:
     cmds:
       - for:
           matrix:
-            SUITE: [ "bionic", "focal", "jammy", "noble" ]
+            SUITE: [ "jammy", "noble" ]
             TYPE: [ "minimal", "gui", "desktop" ]
         cmd: |
           unset MACHINE
@@ -75,7 +72,7 @@ tasks:
     cmds:
       - for:
           matrix:
-            SUITE: [ "buster", "bullseye", "bookworm" ]
+            SUITE: [ "bullseye", "bookworm" ]
             TYPE: [ "minimal", "gui", "desktop" ]
         cmd: |
           unset MACHINE

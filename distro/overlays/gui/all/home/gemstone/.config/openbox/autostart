@@ -1,13 +1,13 @@
 # vim: set ft=bash:
 # -*- mode: bash -*-
 
-# turn off display power management system
+# Turn off display power management system
 xset -dpms
-# turn off screen blanking
+# Turn off screen blanking
 xset s noblank
-# turn off the screen saver
+# Turn off the screen saver
 xset s off
-# set manual resolution for X
+# Set manual resolution for X
 xrandr --output "$KIOSK_DISPLAY" --mode "$KIOSK_RESOLUTION" --rate "$KIOSK_REFRESH_RATE"
 
 # Restart app if terminated

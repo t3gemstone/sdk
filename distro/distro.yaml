@@ -66,22 +66,21 @@ actions:
       - wpasupplicant
       - zip
 
-{{ if eq $suite "jammy" }}
   - action: apt
     recommends: false
     packages: [ iwd, systemd-timesyncd ]
-{{ end }}
 
-{{ if eq $suite "noble" }}
+{{ if eq $suite "noble" "bookworm" }}
   - action: apt
     recommends: false
-    packages: [ iwd, systemd-resolved, systemd-timesyncd ]
+    packages: [ systemd-resolved ]
 {{ end }}
 
 {{ if eq $type "gui" }}
   - action: apt
     recommends: false
     packages:
+      - libdrm-dev
       - openbox
       - python3-pyqt5
       - python3-pyqtgraph
@@ -96,11 +95,7 @@ actions:
   - action: apt
     recommends: true
     packages:
-      - at-spi2-core
       - atril
-      - dmz-cursor-theme
-      - language-pack-gnome-tr
-      - language-pack-tr
       - libxfce4ui-utils
       - lightdm
       - lightdm-gtk-greeter
@@ -108,11 +103,8 @@ actions:
       - network-manager
       - parole
       - ristretto
-      - software-properties-common
       - thunar
       - thunar-archive-plugin
-      - whiptail
-      - xcape
       - xfce4-appfinder
       - xfce4-indicator-plugin
       - xfce4-panel
@@ -129,20 +121,18 @@ actions:
   - action: apt
     recommends: false
     packages:
+      - at-spi2-core
       - baobab
+      - dmz-cursor-theme
       - engrampa
-      - language-selector-gnome
+      - fonts-jetbrains-mono
+      - fonts-noto-core
       - libdrm-dev
       - mate-calc
       - network-manager-gnome
-
-{{ if eq $suite "jammy" "noble" }}
-  - action: apt
-    recommends: false
-    packages: 
-      - fonts-jetbrains-mono
-      - fonts-noto-core
-{{ end }}
+      - software-properties-common
+      - whiptail
+      - xcape
 
 {{ end }}
 
@@ -160,6 +150,12 @@ actions:
       MSG="Gemstone {{ $type }}:{{ $release }}"
       echo "$MSG" >/etc/issue.net
       echo "$MSG\n" >/etc/issue
+
+{{ if eq $type "desktop" }}
+  - action: overlay
+    source: overlays/{{ $type }}/all/etc/skel
+    destination: /etc/skel
+{{ end }}
 
   - action: run
     chroot: true
@@ -218,12 +214,6 @@ actions:
     description: Create icon cache
     chroot: true
     command: gtk-update-icon-cache /usr/share/icons/PiXflat
-{{ end }}
-
-{{ if eq $type "gui" }}
-  - action: run
-    chroot: true
-    script: scripts/custom/install-gui-demo.sh
 {{ end }}
 
   - action: run

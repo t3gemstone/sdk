@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Icon=preferences-desktop-locale
+Exec=set-system-language
+Terminal=true
+Categories=Settings
+Name=System Language
+Name[tr]=Sistem Dili
+Comment=Change system language
+Comment[tr]=Sistem dilini değiştir

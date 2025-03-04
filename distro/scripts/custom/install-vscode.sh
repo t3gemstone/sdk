@@ -2,11 +2,11 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/keyrings/packages.microsoft.gpg
-echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | tee /etc/apt/sources.list.d/vscode.list > /dev/null
-
-apt-get update -y
-apt-get install -y \
+mkdir -p /etc/apt/keyrings /etc/apt/sources.list.d \
+&& wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/keyrings/packages.microsoft.gpg \
+&& echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list \
+&& apt-get update -y \
+&& apt-get install -y \
     apt-transport-https \
     code \
     git
@@ -17,7 +17,7 @@ ext=(
     "charliermarsh.ruff"
     "daylerees.rainglow"
     "eamodio.gitlens"
-    "henriiik.vscode-so"
+    "henriiik.vscode-sort"
     "jetpack-io.devbox"
     "mads-hartmann.bash-ide-vscode"
     "ms-python.python"
@@ -31,5 +31,5 @@ ext=(
 chown -R gemstone:gemstone /home/gemstone
 
 for i in "${ext[@]}"; do
-    HOME=/home/gemstone code --disable-chromium-sandbox --user-data-dir=/home/gemstone/.config/Code/User --install-extension $i
+    HOME=/home/gemstone code --disable-chromium-sandbox --user-data-dir=/home/gemstone/.config/Code/User --force --install-extension $i
 done

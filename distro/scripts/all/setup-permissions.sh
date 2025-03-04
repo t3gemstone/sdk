@@ -5,8 +5,8 @@ set -euo pipefail
 DISTRO_TYPE="${1:-minimal}"
 
 if [[ "$DISTRO_TYPE" == "desktop" ]]; then
-    chmod +x /etc/X11/Xsession.d/56t3-gemstone-session
-    chmod +x /usr/local/bin/set-default-keyboard-layout
+    chmod +x /usr/local/bin/set-system-keyboard-layout
+    chmod +x /usr/local/bin/set-system-language
     chmod +x /usr/local/bin/xfce4-popup-applicationsmenu
 fi
 

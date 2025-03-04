@@ -23,7 +23,6 @@ list=(
 )
 
 for i in "${list[@]}"; do
-    systemctl stop "$i"
     systemctl disable "$i"
 done
 

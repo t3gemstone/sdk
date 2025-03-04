@@ -1,4 +1,4 @@
-# Set default environment vars in T3 Gemstone
+# Set default environment vars in T3 Gemstone session
 if [ "$DESKTOP_SESSION" = "t3-gemstone" ]; then
     # Disable GTK 3.16 overlay scrollbars
     export GTK_OVERLAY_SCROLLING=0
