@@ -21,3 +21,5 @@ yocto/**
 !.distrobox/.bash_completion.d
 !.distrobox/.bash_completion.d/*
 !.distrobox/.bash_completion
+
+mimeinfo.cache

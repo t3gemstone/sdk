@@ -80,10 +80,16 @@ actions:
 
 {{ if eq $type "gui" }}
   - action: apt
-    recommends: true
-    packages: 
-      - libdrm-dev
-      - libqt5core5a
+    recommends: false
+    packages:
+      - openbox
+      - python3-pyqt5
+      - python3-pyqtgraph
+      - x11-xserver-utils
+      - xinit
+      - xserver-xorg-core
+      - xserver-xorg-input-all
+      - xterm
 {{ end }}
 
 {{ if eq $type "desktop" }}
@@ -197,11 +203,6 @@ actions:
   - action: overlay
     source: overlays/{{ $type }}/{{ $machine }}
     destination: /
-
-  - action: run
-    description: Create icon cache
-    chroot: true
-    command: gtk-update-icon-cache /usr/share/icons/PiXflat
 {{ end }}
 
 {{ if eq $type "desktop" }}
@@ -212,6 +213,11 @@ actions:
   - action: run
     chroot: true
     script: scripts/custom/install-vscode.sh
+
+  - action: run
+    description: Create icon cache
+    chroot: true
+    command: gtk-update-icon-cache /usr/share/icons/PiXflat
 {{ end }}
 
 {{ if eq $type "gui" }}

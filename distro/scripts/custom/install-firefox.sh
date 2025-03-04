@@ -2,7 +2,8 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- > /etc/apt/keyrings/packages.mozilla.org.asc \
+mkdir -p /etc/apt/keyrings /etc/apt/sources.list.d /etc/apt/preferences.d \
+    && wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- > /etc/apt/keyrings/packages.mozilla.org.asc \
     && echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" > /etc/apt/sources.list.d/mozilla.list \
     && echo 'Package: *
 Pin: origin packages.mozilla.org

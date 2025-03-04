@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_config xmlns="http://openbox.org/3.4/rc"
+		xmlns:xi="http://www.w3.org/2001/XInclude">
+
+<resistance>
+  <strength>10</strength>
+  <screen_edge_strength>20</screen_edge_strength>
+</resistance>
+
+<focus>
+  <focusNew>yes</focusNew>
+  <followMouse>no</followMouse>
+  <focusLast>yes</focusLast>
+  <underMouse>no</underMouse>
+</focus>
+
+<placement>
+  <policy>Smart</policy>
+  <center>yes</center>
+  <monitor>Primary</monitor>
+  <primaryMonitor>1</primaryMonitor>
+</placement>
+
+<theme>
+  <name>Clearlooks</name>
+  <titleLayout></titleLayout>
+  <keepBorder>no</keepBorder>
+  <animateIconify>no</animateIconify>
+</theme>
+
+<desktops>
+  <number>1</number>
+  <firstdesk>1</firstdesk>
+  <names>
+  </names>
+</desktops>
+
+<resize>
+</resize>
+
+<margins>
+  <top>0</top>
+  <bottom>0</bottom>
+  <left>0</left>
+  <right>0</right>
+</margins>
+
+<dock>
+</dock>
+
+<keyboard>
+</keyboard>
+
+<mouse>
+</mouse>
+
+<menu>
+</menu>
+
+<applications>
+  <application class="*">
+    <decor>no</decor>
+    <fullscreen>yes</fullscreen>
+    <maximized>yes</maximized>
+  </application>
+</applications>
+
+</openbox_config>

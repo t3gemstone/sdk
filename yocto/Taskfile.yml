@@ -45,7 +45,7 @@ tasks:
           -device usb-tablet
           -device usb-kbd
           -device virtio-gpu-pci
-          -serial mon:stdio
+          -serial stdio
           -vga virtio
           -kernel "{{ .QEMU_KERNEL_BIN }}"
           -append 'root=/dev/vda2 rw init_fatal_sh=1 loglevel=4'
