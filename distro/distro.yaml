@@ -133,7 +133,6 @@ actions:
       - software-properties-common
       - whiptail
       - xcape
-
 {{ end }}
 
   - action: run

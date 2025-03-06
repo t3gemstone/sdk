@@ -25,15 +25,15 @@ repositories:
     url: git://git.openembedded.org/meta-openembedded
     version: dda0d53326017d6758ec6bdfdaf2f484c089d13f
 
-  yocto/meta-gemstone:
-    type: git
-    url: git@github.com:t3gemstone/meta-gemstone.git
-    version: aab9df4ad5cb383a4275d5263366066a959a82a6
-
   yocto/meta-intel:
     type: git
     url: https://git.yoctoproject.org/meta-intel
     version: 0be954e82f09d235d2b5e5ea01bb62ffa8d0b5f7
+
+  yocto/meta-gemstone:
+    type: git
+    url: git@github.com:t3gemstone/meta-gemstone.git
+    version: aab9df4ad5cb383a4275d5263366066a959a82a6
 
   src/gem-tools:
     type: git
