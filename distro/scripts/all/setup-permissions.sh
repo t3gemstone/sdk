@@ -10,9 +10,9 @@ if [[ "$DISTRO_TYPE" == "desktop" ]]; then
     chmod +x /usr/local/bin/xfce4-popup-applicationsmenu
 fi
 
-if [[ "$DISTRO_TYPE" == "GUI" ]]; then
-    if [[ -f /usr/local/bin/gui ]]; then
-        chmod +x /usr/local/bin/gui
+if [[ "$DISTRO_TYPE" == "kiosk" ]]; then
+    if [[ -f /usr/local/bin/kiosk ]]; then
+        chmod +x /usr/local/bin/kiosk
     fi
 fi
 

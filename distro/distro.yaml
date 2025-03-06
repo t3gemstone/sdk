@@ -76,7 +76,7 @@ actions:
     packages: [ systemd-resolved ]
 {{ end }}
 
-{{ if eq $type "gui" }}
+{{ if eq $type "kiosk" }}
   - action: apt
     recommends: false
     packages:
@@ -191,7 +191,7 @@ actions:
     script: scripts/beagley-ai/install-firmware.sh {{ $workdir }} $ROOTDIR
 {{ end }}
 
-{{ if eq $type "gui" "desktop" }}
+{{ if eq $type "kiosk" "desktop" }}
   - action: overlay
     source: overlays/{{ $type }}/all
     destination: /

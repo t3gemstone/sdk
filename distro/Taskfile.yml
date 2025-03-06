@@ -48,7 +48,7 @@ tasks:
         - name: DISTRO_BASE
           enum: [ ubuntu, debian ]
         - name: DISTRO_TYPE
-          enum: [ minimal, gui, desktop ]
+          enum: [ minimal, kiosk, desktop ]
         - name: DISTRO_ARCH
           enum: [ arm64, amd64 ]
         - name: DISTRO_SUITE
@@ -63,7 +63,7 @@ tasks:
       - for:
           matrix:
             SUITE: [ "jammy", "noble" ]
-            TYPE: [ "minimal", "gui", "desktop" ]
+            TYPE: [ "minimal", "kiosk", "desktop" ]
         cmd: |
           unset MACHINE
           task distro:build MACHINE={{.MACHINE}} DISTRO_ARCH=arm64 DISTRO_BASE=ubuntu DISTRO_TYPE={{.ITEM.TYPE}} DISTRO_SUITE={{.ITEM.SUITE}}
@@ -73,7 +73,7 @@ tasks:
       - for:
           matrix:
             SUITE: [ "bullseye", "bookworm" ]
-            TYPE: [ "minimal", "gui", "desktop" ]
+            TYPE: [ "minimal", "kiosk", "desktop" ]
         cmd: |
           unset MACHINE
           task distro:build MACHINE={{.MACHINE}} DISTRO_ARCH=arm64 DISTRO_BASE=debian DISTRO_TYPE={{.ITEM.TYPE}} DISTRO_SUITE={{.ITEM.SUITE}}
