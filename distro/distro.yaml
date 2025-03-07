@@ -176,6 +176,10 @@ actions:
     chroot: true
     script: scripts/{{ $machine }}/install-local-apt.sh {{ $machine }} {{ $type }}
 
+  - action: run
+    chroot: true
+    script: scripts/all/install-astral-uv.sh
+
 {{ if eq $machine "beagley-ai" }}
   - action: run
     chroot: true
