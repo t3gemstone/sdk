@@ -245,7 +245,7 @@ actions:
 
   - action: run
     chroot: true
-    script: scripts/all/clean-up.sh {{ $type }}
+    script: scripts/all/clean-up.sh {{ $type }} {{ $suite }} {{ $base }}
 
   - action: image-partition
     imagename: {{ $image }}

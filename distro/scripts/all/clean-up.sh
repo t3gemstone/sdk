@@ -3,18 +3,20 @@
 export DEBIAN_FRONTEND=noninteractive
 
 DISTRO_TYPE="${1:-minimal}"
+DISTRO_SUITE="${2:-jammy}"
+DISTRO_BASE="${3:-ubuntu}"
 
 if [[ "$DISTRO_TYPE" == "desktop" ]]; then
     echo "apt-get purge"
 
-    apt-get purge -y elementary-xfce-icon-theme
     apt-get purge -y gnome-accessibility-themes
     apt-get purge -y gnome-themes-extra
-    apt-get purge -y humanity-icon-theme
-    apt-get purge -y ibus
-    apt-get purge -y ubuntu-wallpapers
-    apt-get purge -y xarchiver
-    apt-get purge -y xfce4-screensaver
+
+    if [[ "$DISTRO_BASE" == "ubuntu" ]]; then
+        apt-get purge -y elementary-xfce-icon-theme
+    elif [[ "$DISTRO_BASE" == "debian" ]]; then
+        apt-get purge -y xarchiver
+    fi
 
     rm /usr/share/xsessions/xfce.desktop
     rm /etc/xdg/autostart/xscreensaver.desktop
