@@ -9,7 +9,7 @@
       <property name="position" type="string" value="p=6;x=0;y=0"/>
       <property name="length" type="uint" value="100"/>
       <property name="position-locked" type="bool" value="true"/>
-      <property name="icon-size" type="uint" value="0"/>
+      <property name="icon-size" type="uint" value="40"/>
       <property name="size" type="uint" value="46"/>
       <property name="plugin-ids" type="array">
         <value type="int" value="1"/>
@@ -54,12 +54,12 @@
     </property>
     <property name="plugin-3" type="string" value="launcher">
       <property name="items" type="array">
-        <value type="string" value="org.t3-gemstone.file-manager.desktop"/>
+        <value type="string" value="xfce4-file-manager.desktop"/>
       </property>
     </property>
     <property name="plugin-4" type="string" value="launcher">
       <property name="items" type="array">
-        <value type="string" value="org.t3-gemstone.terminal-emulator.desktop"/>
+        <value type="string" value="xfce4-terminal-emulator.desktop"/>
       </property>
     </property>
     <property name="plugin-5" type="string" value="launcher">
@@ -69,7 +69,7 @@
     </property>
     <property name="plugin-6" type="string" value="launcher">
       <property name="items" type="array">
-        <value type="string" value="org.t3-gemstone.web-browser.desktop"/>
+        <value type="string" value="xfce4-web-browser.desktop"/>
       </property>
     </property>
     <property name="plugin-7" type="string" value="launcher">
@@ -85,7 +85,7 @@
     </property>
     <property name="plugin-9" type="string" value="launcher">
       <property name="items" type="array">
-        <value type="string" value="org.t3-gemstone.settings-manager.desktop"/>
+        <value type="string" value="xfce-settings-manager.desktop"/>
       </property>
     </property>
     <property name="plugin-10" type="string" value="separator">
@@ -104,7 +104,7 @@
     </property>
     <property name="plugin-13" type="string" value="xkb">
       <property name="display-type" type="uint" value="0"/>
-      <property name="display-scale" type="uint" value="80"/>
+      <property name="display-scale" type="uint" value="60"/>
       <property name="group-policy" type="uint" value="0"/>
       <property name="display-name" type="uint" value="0"/>
     </property>

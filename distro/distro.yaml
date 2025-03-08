@@ -123,11 +123,13 @@ actions:
     packages:
       - at-spi2-core
       - baobab
+      - dbus-x11
       - dmz-cursor-theme
       - engrampa
       - fonts-jetbrains-mono
       - fonts-noto-core
       - libdrm-dev
+      - libxcb-cursor0
       - mate-calc
       - network-manager-gnome
       - software-properties-common
@@ -216,7 +218,11 @@ actions:
   - action: run
     description: Create icon cache
     chroot: true
-    command: gtk-update-icon-cache /usr/share/icons/PiXflat
+    command: |
+      rm -f /usr/share/icons/PiXflat/icon-theme.cache
+      gtk-update-icon-cache /usr/share/icons/PiXflat
+      rm -f /usr/share/icons/hicolor/icon-theme.cache
+      gtk-update-icon-cache /usr/share/icons/hicolor
 {{ end }}
 
   - action: run

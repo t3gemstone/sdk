@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.1
 Type=Application
-Icon=system-log-out
+Icon=system-shutdown
 Exec=xfce4-session-logout
 Categories=X-XFCE;X-Xfce-Toplevel;
 OnlyShowIn=XFCE;
