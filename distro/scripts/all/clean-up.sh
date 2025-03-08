@@ -9,18 +9,24 @@ DISTRO_BASE="${3:-ubuntu}"
 if [[ "$DISTRO_TYPE" == "desktop" ]]; then
     echo "apt-get purge"
 
-    apt-get purge -y gnome-accessibility-themes
-    apt-get purge -y gnome-themes-extra
-
     if [[ "$DISTRO_BASE" == "ubuntu" ]]; then
         apt-get purge -y elementary-xfce-icon-theme
-    elif [[ "$DISTRO_BASE" == "debian" ]]; then
-        apt-get purge -y xarchiver
+        apt-get purge -y ubuntu-wallpapers
+        apt-get purge -y xfce4-screensaver
     fi
 
-    rm /usr/share/xsessions/xfce.desktop
-    rm /etc/xdg/autostart/xscreensaver.desktop
-    find /usr/share/backgrounds -mindepth 1 -not -path "*t3-gemstone*" -exec rm -r {} \; 2>/dev/null
+    apt-get purge -y gnome-accessibility-themes
+    apt-get purge -y gnome-themes-extra
+    apt-get purge -y light-locker
+    apt-get purge -y xarchiver
+
+    apt-get autoremove -y
+    # Reinstall automatically removed packages
+    apt-get install -y gtk2-engines-pixbuf xdg-utils
+
+    rm -f /usr/share/xsessions/{xfce.desktop,lightdm-xsession.desktop}
+    rm -f /etc/xdg/autostart/{xscreensaver.desktop,light-locker.desktop}
+    find /usr/share/backgrounds -mindepth 1 -not -path "*t3-gemstone*" -exec rm -rf {} \; 2>/dev/null
 fi
 
 apt-get autoremove -y
