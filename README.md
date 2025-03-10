@@ -57,7 +57,7 @@ user@host:$ devbox shell
 
 ### Screencast
 
-[![asciicast](https://asciinema.org/a/9rFVq9fqU5RdAf4FFJclJvKG5.svg)](https://asciinema.org/a/9rFVq9fqU5RdAf4FFJclJvKG5)
+[![asciicast](https://asciinema.org/a/KDwPPlCV2wxzpwDB4sLseW2X9.svg)](https://asciinema.org/a/KDwPPlCV2wxzpwDB4sLseW2X9)
 
 ### Troubleshoting
 
