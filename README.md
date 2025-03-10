@@ -12,7 +12,7 @@
 
 ## What is it?
 
-This project includes all the necessary work for compiling the operating system, kernel, and other tools found on T3 Gemstone boards, and is intended for developers who wish to prepare a Linux Distribution.
+This project includes all the necessary work for compiling the operating system, kernel, and other tools found on T3 Gemstone boards, and is intended for developers who wish to prepare a GNU/Linux Distribution.
 
 All details related to the project can be found at https://docs.t3gemstone.org/en/sdk. Below, only a summary of how to perform the installation is provided.
 
@@ -40,11 +40,12 @@ user@host:$ devbox shell
 ##### 4. Build the Yocto recipes and Gemstone distro.
 
 ```bash
-# Show all available tasks
-🚀 distrobox:workdir> task --list-all --summary
+# Show all available tasks and environment variables
+🚀 distrobox:workdir> task default
 
-# Build yocto artifacts
+# Build kernel, bootloader, initrd
 # Note: First build takes approximately 2 hours and you need at least 32GB empty disk space
+# Note: MACHINE can be 'intel-corei7-64', 'beagley-ai' or 't3-gem-o1'
 🚀 distrobox:workdir> task yocto:build MACHINE=intel-corei7-64
 
 # Pack Gemstone Distro
