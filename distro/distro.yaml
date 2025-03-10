@@ -81,6 +81,7 @@ actions:
     recommends: false
     packages:
       - libdrm-dev
+      - libxcb-cursor0
       - openbox
       - python3-pyqt5
       - python3-pyqtgraph
@@ -92,10 +93,18 @@ actions:
 {{ end }}
 
 {{ if eq $type "desktop" }}
+
+{{ if eq $suite "jammy" "noble" }}
+  - action: apt
+    recommends: false
+    packages: [ adwaita-icon-theme-full ]
+{{ end }}
+
   - action: apt
     recommends: true
     packages:
       - atril
+      - catfish
       - libxfce4ui-utils
       - lightdm
       - lightdm-gtk-greeter
@@ -124,17 +133,23 @@ actions:
       - at-spi2-core
       - baobab
       - dbus-x11
-      - dmz-cursor-theme
       - engrampa
       - fonts-jetbrains-mono
       - fonts-noto-core
       - libdrm-dev
-      - libxcb-cursor0
       - mate-calc
       - network-manager-gnome
       - software-properties-common
       - whiptail
       - xcape
+
+  - action: run
+    description: Install PiXflat theme from deb
+    chroot: true
+    command: |
+      cd $(mktemp -d)
+      wget http://archive.raspberrypi.org/debian/pool/main/p/pixflat-icons/pixflat-icons_0.26_all.deb
+      apt-get install -y ./pixflat-icons_0.26_all.deb
 {{ end }}
 
   - action: run
@@ -219,10 +234,8 @@ actions:
     description: Create icon cache
     chroot: true
     command: |
-      rm -f /usr/share/icons/PiXflat/icon-theme.cache
-      gtk-update-icon-cache /usr/share/icons/PiXflat
-      rm -f /usr/share/icons/hicolor/icon-theme.cache
-      gtk-update-icon-cache /usr/share/icons/hicolor
+      gtk-update-icon-cache --force --ignore-theme-index /usr/share/icons/T3-Gemstone
+      gtk-update-icon-cache --force --ignore-theme-index /usr/share/icons/hicolor
 {{ end }}
 
   - action: run

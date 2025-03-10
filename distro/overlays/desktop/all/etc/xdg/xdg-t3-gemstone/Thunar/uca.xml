@@ -2,13 +2,13 @@
 <actions>
   <action>
     <icon>utilities-terminal</icon>
-    <name>Open Terminal Here</name>
-    <name xml:lang="tr">Burada Terminal Aç</name>
+    <name>Open Terminal</name>
+    <name xml:lang="tr">Terminal Aç</name>
     <submenu/>
     <unique-id>1-1</unique-id>
     <command>exo-open --working-directory %f --launch TerminalEmulator</command>
-    <description>Open terminal in containing directory</description>
-    <description xml:lang="tr">Dizinde Terminal Aç</description>
+    <description>Open terminal in this directory</description>
+    <description xml:lang="tr">Bu dizin içerisinde terminal aç</description>
     <range/>
     <patterns>*</patterns>
     <startup-notify/>
@@ -17,16 +17,15 @@
 
   <action>
     <icon>edit-find</icon>
-    <name>Find in this folder</name>
-    <name xml:lang="tr">Bu dizinde bul</name>
+    <name>Find Files</name>
+    <name xml:lang="tr">Dosyaları Bul</name>
     <submenu/>
     <unique-id>2-2</unique-id>
     <command>catfish --path=%f</command>
-    <description>Search for files within this folder</description>
+    <description>Search for files within this directory</description>
     <description xml:lang="tr">Bu dizin içerisinde dosyaları ara</description>
     <range/>
     <patterns>*</patterns>
     <directories/>
   </action>
-
 </actions>

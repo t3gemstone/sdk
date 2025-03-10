@@ -2,8 +2,8 @@
 
 <channel name="xsettings" version="1.0">
   <property name="Net" type="empty">
-    <property name="ThemeName" type="string" value="PiXflat"/>
-    <property name="IconThemeName" type="string" value="PiXflat"/>
+    <property name="ThemeName" type="string" value="T3-Gemstone"/>
+    <property name="IconThemeName" type="string" value="T3-Gemstone"/>
   </property>
   <property name="Xft" type="empty">
     <property name="DPI" type="int" value="96"/>
@@ -17,7 +17,7 @@
     <property name="MonospaceFontName" type="string" value="JetBrains Mono 12"/>
     <property name="MenuImages" type="bool" value="true"/>
     <property name="ButtonImages" type="bool" value="true"/>
-    <property name="CursorThemeName" type="string" value="DMZ-Black"/>
+    <property name="CursorThemeName" type="string" value="Adwaita"/>
     <property name="CursorThemeSize" type="int" value="28"/>
     <property name="DecorationLayout" type="string" value="menu:minimize,maximize,close"/>
     <property name="DialogsUseHeader" type="bool" value="false"/>

@@ -15,7 +15,6 @@ if [[ "$DISTRO_TYPE" == "desktop" ]]; then
         apt-get purge -y xfce4-screensaver
     fi
 
-    apt-get purge -y gnome-accessibility-themes
     apt-get purge -y gnome-themes-extra
     apt-get purge -y light-locker
     apt-get purge -y xarchiver
@@ -23,7 +22,7 @@ if [[ "$DISTRO_TYPE" == "desktop" ]]; then
     apt-get autoremove -y
 
     # Reinstall automatically removed packages
-    apt-get install -y gtk2-engines-pixbuf xdg-utils
+    apt-get install -y gtk2-engines-pixbuf
 
     rm -f /usr/share/xsessions/{xfce.desktop,lightdm-xsession.desktop}
     rm -f /etc/xdg/autostart/{xscreensaver.desktop,light-locker.desktop}

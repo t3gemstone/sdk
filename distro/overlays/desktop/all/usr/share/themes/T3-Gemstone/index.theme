@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=T3 Gemstone
+Comment=Gtk2/3 and Xfwm4 theme based on PiXflat
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=T3-Gemstone
+MetacityTheme=T3-Gemstone
+IconTheme=T3-Gemstone
+CursorTheme=Adwaita
