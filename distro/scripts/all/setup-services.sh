@@ -1,6 +1,11 @@
 #!/bin/bash
 
-if [ -f /usr/local/bin/gem-first-init ]; then
-    chmod +x /usr/local/bin/gem-first-init
-    systemctl enable gem-first-init
+if [ -f /usr/local/bin/gem-first-boot ]; then
+    chmod +x /usr/local/bin/gem-first-boot
+    systemctl enable gem-first-boot
+fi
+
+if [ -f /usr/local/bin/gem-init ]; then
+    chmod +x /usr/local/bin/gem-init
+    systemctl enable gem-init
 fi

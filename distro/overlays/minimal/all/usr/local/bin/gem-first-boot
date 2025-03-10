@@ -1,6 +1,6 @@
 #!/bin/bash
 
-is_done=/etc/gem-first-init.isdone
+is_done=/etc/gem-first-boot.isdone
 
 if [ -f $is_done ]; then
     exit 0
@@ -26,6 +26,6 @@ for i in "${list[@]}"; do
     systemctl disable "$i"
 done
 
-systemctl disable gem-first-init.service
+systemctl disable gem-first-boot.service
 echo "$(date)" > $is_done
 exit 0

@@ -3,7 +3,7 @@ Description=Configure system after first systemd init
 After=basic.target
 
 [Service]
-ExecStart=/usr/local/bin/gem-first-init
+ExecStart=/usr/local/bin/gem-first-boot
 Type=oneshot
 User=root
 

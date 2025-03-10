@@ -21,6 +21,7 @@ if [[ "$DISTRO_TYPE" == "desktop" ]]; then
     apt-get purge -y xarchiver
 
     apt-get autoremove -y
+
     # Reinstall automatically removed packages
     apt-get install -y gtk2-engines-pixbuf xdg-utils
 

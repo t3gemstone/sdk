@@ -1,0 +1,11 @@
+[Unit]
+Description=Executed in every boot
+After=basic.target
+
+[Service]
+ExecStart=/usr/local/bin/gem-init
+Type=simple
+User=root
+
+[Install]
+WantedBy=multi-user.target
