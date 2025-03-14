@@ -25,7 +25,7 @@ readonly CLEAR_LAST_MSG="\033[1F\033[0K"
 
 readonly DESCRIPTION=$(
     cat <<EOF
-  This script downloads and installs T3 Gemstone Board's required packages 📦 for the development of its GNU/Linux Distro.
+  This script downloads and installs T3 Gemstone Boards' required packages 📦 for the development of its customized GNU/Linux Distro.
   Powered by Jetify Devbox, Distrobox, ${BOLD}Love${NO_COLOR} and ${BOLD}Passion${NO_COLOR}.
 EOF
 )

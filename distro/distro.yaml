@@ -187,10 +187,6 @@ actions:
 
   - action: run
     chroot: true
-    script: scripts/all/install-local-apt.sh {{ $machine }} {{ $type }}
-
-  - action: run
-    chroot: true
     script: scripts/{{ $machine }}/install-local-apt.sh {{ $machine }} {{ $type }}
 
   - action: run
@@ -249,6 +245,10 @@ actions:
   - action: run
     chroot: true
     script: scripts/all/disable-services.sh {{ $type }}
+
+  - action: run
+    chroot: true
+    script: scripts/all/setup-gemstone-apt.sh {{ $machine }} {{ $suite }}
 
   - action: run
     chroot: true

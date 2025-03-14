@@ -12,7 +12,7 @@
 
 ## What is it?
 
-This project includes all the necessary work for compiling the operating system, kernel, and other tools found on T3 Gemstone boards, and is intended for developers who wish to prepare a GNU/Linux Distribution.
+This project includes all the necessary work for compiling the operating system, kernel, and other tools found on T3 Gemstone boards, and is intended for developers who wish to prepare a customized GNU/Linux Distribution.
 
 All details related to the project can be found at https://docs.t3gemstone.org/en/sdk. Below, only a summary of how to perform the installation is provided.
 
@@ -103,4 +103,17 @@ user@host:$ devbox shell
 
 # Rebuild
 🚀 distrobox:workdir> task yocto:build MACHINE=intel-corei7-64
+```
+
+### Configuration of Kernel and U-Boot
+
+```bash
+# Initialize bitbake
+🚀 distrobox:workdir> source yocto/poky/oe-init-build-env build/intel-corei7-64
+
+# Tune Linux Kernel
+🚀 distrobox:intel-corei7-64> bitbake -c menuconfig virtual/kernel
+
+# Tune U-Boot
+🚀 distrobox:intel-corei7-64> bitbake -c menuconfig virtual/bootloader
 ```
