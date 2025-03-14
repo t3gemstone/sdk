@@ -44,8 +44,8 @@ user@host:$ devbox shell
 🚀 distrobox:workdir> task default
 
 # Build kernel, bootloader, initrd
+# Note: MACHINE can be 'intel-corei7-64', 't3-gem-o1' or 'beagley-ai'
 # Note: First build takes approximately 2 hours and you need at least 32GB empty disk space
-# Note: MACHINE can be 'intel-corei7-64', 'beagley-ai' or 't3-gem-o1'
 🚀 distrobox:workdir> task yocto:build MACHINE=intel-corei7-64
 
 # Pack Gemstone Distro
@@ -70,11 +70,6 @@ Docker is installed on your system via the `./setup.sh` command. If you are inst
 When you perform the compilation process with the task:distro command many times, debos may occasionally give a "Segmentation Fault" error. To solve this problem, first try running the following command inside [devbox shell](#section-ii)
 
 ```bash
-# Activate devbox shell
-user@host:$ devbox shell
-```
-
-```bash
 📦 devbox:sdk> distrobox stop gemstone-sdk
 ```
 
@@ -85,11 +80,6 @@ if it does not work, run the destroy command.
 ```
 
 #### Yocto Issues
-
-```bash
-# Activate devbox shell
-user@host:$ devbox shell
-```
 
 ```bash
 # Stop distrobox
