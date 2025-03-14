@@ -26,6 +26,28 @@ for i in "${list[@]}"; do
     systemctl disable "$i"
 done
 
+configfile="/boot/config.ini"
+
+if [ -f $configfile ]; then
+    source $configfile
+
+    if [ ! -z ${firstboot+x} ]; then
+        if [ ! -z ${userpasswd+x} ]; then
+            # TODO: Use Encryption
+            echo "gemstone:$userpasswd" | chpasswd && echo "Password is changed."
+        fi
+
+        if [ ! -z ${wifiname+x} ] && [ ! -z ${wifipasswd+x} ]; then
+            echo '#todo'
+        fi
+    fi
+
+    sed -i '/firstboot=/d' $configfile
+    sed -i '/userpasswd=/d' $configfile
+    sed -i '/wifiname=/d' $configfile
+    sed -i '/wifipasswd=/d' $configfile
+fi
+
 systemctl disable gem-first-boot.service
 echo "$(date)" > $is_done
 exit 0
