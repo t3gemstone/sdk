@@ -48,4 +48,4 @@ tasks:
           -serial stdio
           -vga virtio
           -kernel "{{ .QEMU_KERNEL_BIN }}"
-          -append 'root=/dev/vda2 rw init_fatal_sh=1 loglevel=4'
+          -append 'root=/dev/vda2 rw init_fatal_sh=1 loglevel=4 quite splash plymouth.enable=1'

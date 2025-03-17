@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=gemstone-logo
+Description=Plymouth theme for T3 Gemstone Desktop
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/gemstone-logo
+ScriptFile=/usr/share/plymouth/themes/gemstone-logo/gemstone-logo.script

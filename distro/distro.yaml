@@ -111,6 +111,9 @@ actions:
       - mousepad
       - network-manager
       - parole
+      - plymouth
+      - plymouth-themes
+      - plymouth-x11
       - ristretto
       - thunar
       - thunar-archive-plugin
@@ -150,6 +153,7 @@ actions:
       cd $(mktemp -d)
       wget http://archive.raspberrypi.org/debian/pool/main/p/pixflat-icons/pixflat-icons_0.26_all.deb
       apt-get install -y ./pixflat-icons_0.26_all.deb
+
 {{ end }}
 
   - action: run
@@ -232,6 +236,14 @@ actions:
     command: |
       gtk-update-icon-cache --force --ignore-theme-index /usr/share/icons/T3-Gemstone
       gtk-update-icon-cache --force --ignore-theme-index /usr/share/icons/hicolor
+
+  - action: run
+    chroot: true
+    description: Install plymouth boot splash theme
+    command: |
+      update-alternatives --install \
+          /usr/share/plymouth/themes/default.plymouth default.plymouth \
+          /usr/share/plymouth/themes/gemstone-logo/gemstone-logo.plymouth 300
 {{ end }}
 
   - action: run
