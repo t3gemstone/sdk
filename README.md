@@ -67,7 +67,16 @@ Docker is installed on your system via the `./setup.sh` command. If you are inst
 
 #### Debos Segmentation Fault Error
 
-When you perform the compilation process with the task:distro command many times, debos may occasionally give a "Segmentation Fault" error. To solve this problem, first try running the following command inside [devbox shell](#section-ii)
+When you perform the compilation process with the task:distro command many times, debos may occasionally give a "Segmentation Fault" error. 
+
+Additionally, following error can occur while compiling the arm64 image for BeagleY-AI. This problem persists even after rebooting your system, so you may need to apply the solution after each reboot.
+
+```
+W: Failure trying to run:  /sbin/ldconfig
+qemu: uncaught target signal 11 (Segmentation fault) - core dumped
+```
+
+To solve these problems, first try running the following command inside [devbox shell](#section-ii)
 
 ```bash
 📦 devbox:sdk> distrobox stop gemstone-sdk
