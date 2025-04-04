@@ -59,19 +59,32 @@ user@host:$ devbox shell
 
 [![asciicast](https://asciinema.org/a/KDwPPlCV2wxzpwDB4sLseW2X9.svg)](https://asciinema.org/a/KDwPPlCV2wxzpwDB4sLseW2X9)
 
-### Troubleshoting
+# Configuration of Kernel and U-Boot
 
-#### First Installation of Docker
+```bash
+# Initialize bitbake
+🚀 distrobox:workdir> source yocto/poky/oe-init-build-env build/intel-corei7-64
+
+# Tune Linux Kernel
+🚀 distrobox:intel-corei7-64> bitbake -c menuconfig virtual/kernel
+
+# Tune U-Boot
+🚀 distrobox:intel-corei7-64> bitbake -c menuconfig virtual/bootloader
+```
+
+# Troubleshoting
+
+#### 1. First Installation of Docker
 
 Docker is installed on your system via the `./setup.sh` command. If you are installing Docker for the first time, you must log out and log in again after the installation is complete.
 
-#### Debos Segmentation Fault Error
+#### 2. Debos Segmentation Fault Error
 
 When you perform the compilation process with the task:distro command many times, debos may occasionally give a "Segmentation Fault" error. 
 
 Additionally, following error can occur while compiling the arm64 image for BeagleY-AI. This problem persists even after rebooting your system, so you may need to apply the solution after each reboot.
 
-```
+```sh
 W: Failure trying to run:  /sbin/ldconfig
 qemu: uncaught target signal 11 (Segmentation fault) - core dumped
 ```
@@ -88,7 +101,7 @@ if it does not work, run the destroy command.
 📦 devbox:sdk> task destroy
 ```
 
-#### Yocto Issues
+#### 3. Yocto Issues
 
 ```bash
 # Stop distrobox
@@ -104,15 +117,22 @@ if it does not work, run the destroy command.
 🚀 distrobox:workdir> task yocto:build MACHINE=intel-corei7-64
 ```
 
-### Configuration of Kernel and U-Boot
+#### 4. Failed `task box` command
+
+```sh
+📦 devbox:sdk> task box
+task: Failed to run task "box": exit status 1
+Error: An error occurred
+```
+
+To figure out what exact problem is, run `distrobox-enter --additional-flags "--tty" --name gemstone-sdk --no-workdir --verbose`
+
+```sh
+*** update-locale: Error: invalid locale settings:  LC_ALL=en_EN.UTF-8 LANG=en_EN.UTF-8
+```
+
+To solve this problem, try to update locales
 
 ```bash
-# Initialize bitbake
-🚀 distrobox:workdir> source yocto/poky/oe-init-build-env build/intel-corei7-64
-
-# Tune Linux Kernel
-🚀 distrobox:intel-corei7-64> bitbake -c menuconfig virtual/kernel
-
-# Tune U-Boot
-🚀 distrobox:intel-corei7-64> bitbake -c menuconfig virtual/bootloader
+📦 devbox:sdk> sudo dpkg-reconfigure locales 
 ```
