@@ -266,6 +266,10 @@ actions:
     chroot: true
     script: scripts/all/clean-up.sh {{ $type }} {{ $suite }} {{ $base }}
 
+  - action: run
+    chroot: true
+    script: scripts/all/setup-info.sh {{ $type }} {{ $release }}
+
   - action: image-partition
     imagename: {{ $image }}
     imagesize: {{ $imagesize }}
