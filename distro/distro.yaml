@@ -126,6 +126,8 @@ actions:
       - xfconf
       - xfdesktop4
       - xfwm4
+      - usbutils
+      - ssh
 
   - action: apt
     recommends: false
