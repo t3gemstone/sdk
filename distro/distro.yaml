@@ -207,6 +207,10 @@ actions:
   - action: run
     chroot: false
     script: scripts/beagley-ai/install-firmware.sh {{ $workdir }} $ROOTDIR
+
+  - action: run
+    chroot: true
+    script: scripts/beagley-ai/gpio-set.sh $ROOTDIR
 {{ end }}
 
 {{ if eq $type "kiosk" "desktop" }}
