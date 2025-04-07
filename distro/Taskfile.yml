@@ -44,7 +44,7 @@ tasks:
     requires:
       vars:
         - name: MACHINE
-          enum: [ beagley-ai, intel-corei7-64 ]
+          enum: [ beagley-ai, intel-corei7-64, t3-gem-o1 ]
         - name: DISTRO_BASE
           enum: [ ubuntu, debian ]
         - name: DISTRO_TYPE
@@ -84,5 +84,5 @@ tasks:
       - for:
           matrix:
             DISTRO: [ "ubuntu", "debian" ]
-            MACHINE: [ "beagley-ai", "intel-corei7-64" ]
+            MACHINE: [ "beagley-ai", "intel-corei7-64", "t3-gem-o1" ]
         cmd: 'task distro:build:all:{{.ITEM.DISTRO}} MACHINE={{.ITEM.MACHINE}}'
