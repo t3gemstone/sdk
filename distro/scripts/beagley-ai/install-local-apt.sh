@@ -18,4 +18,10 @@ apt-get install -y \
     kernel-module-ti-k3-dsp-remoteproc \
     kernel-module-ti-k3-r5-remoteproc \
     kernel-module-bluetooth \
+    kernel-module-usb-f-mass-storage \
+    kernel-module-usb-f-acm \
+    kernel-module-usb-f-rndis \
+    kernel-module-u-ether \
+    kernel-module-u-serial \
+    kernel-module-libcomposite \
     ti-img-rogue-driver

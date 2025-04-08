@@ -3,7 +3,7 @@ Description=Use USB as TTY, Ethernet, Mass Storage
 After=basic.target
 
 [Service]
-ExecStart=/usr/local/bin/gem-usb-gadgets
+ExecStart=/usr/local/bin/gem-usb-gadgets run
 Type=oneshot
 User=root
 

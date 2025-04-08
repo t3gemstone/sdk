@@ -39,6 +39,8 @@ actions:
       - coreutils
       - curl
       - dialog
+      - dnsmasq-base
+      - dosfstools
       - file
       - fuse
       - gawk
