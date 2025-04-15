@@ -62,8 +62,10 @@ actions:
       - systemd
       - tar
       - tree
+      - tzdata
       - udev
       - unzip
+      - uuid-runtime
       - wget
       - wpasupplicant
       - zip
