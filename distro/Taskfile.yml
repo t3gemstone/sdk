@@ -22,8 +22,8 @@ tasks:
       - task: permissions
       - task: yocto:local-apt-server
       - sudo mkdir -p /run/debos
-      - cd /run/debos && 
-          sudo debos 
+      - cd /run/debos &&
+          sudo debos
             --disable-fakemachine
             --debug-shell
             --artifactdir={{ .IMG_DEPLOY_DIR }}
@@ -44,7 +44,7 @@ tasks:
     requires:
       vars:
         - name: MACHINE
-          enum: [ beagley-ai, intel-corei7-64, t3-gem-o1 ]
+          enum: [ beagley-ai, intel-corei7-64, t3-gem-o1, qemuarm64 ]
         - name: DISTRO_BASE
           enum: [ ubuntu, debian ]
         - name: DISTRO_TYPE
@@ -52,7 +52,7 @@ tasks:
         - name: DISTRO_ARCH
           enum: [ arm64, amd64 ]
         - name: DISTRO_SUITE
-          enum: 
+          enum:
             - jammy     # Ubuntu 22
             - noble     # Ubuntu 24
             - bullseye  # Debian 11
@@ -84,5 +84,5 @@ tasks:
       - for:
           matrix:
             DISTRO: [ "ubuntu", "debian" ]
-            MACHINE: [ "beagley-ai", "intel-corei7-64", "t3-gem-o1" ]
+            MACHINE: [ "beagley-ai", "intel-corei7-64", "t3-gem-o1", "qemuarm64" ]
         cmd: 'task distro:build:all:{{.ITEM.DISTRO}} MACHINE={{.ITEM.MACHINE}}'
