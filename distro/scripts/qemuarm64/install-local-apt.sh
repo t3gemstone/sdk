@@ -12,14 +12,9 @@ apt-get install -y \
     kernel \
     kernel-image \
     kernel-module-configfs \
-    kernel-module-fuse \
-    kernel-module-squashfs
+    kernel-module-fuse
 
 if [[ "$DISTRO_TYPE" == "desktop" || "$DISTRO_TYPE" == "gui" ]]; then
     apt-get install -y \
-        kernel-module-cirrus \
-        kernel-module-drm-display-helper \
-        kernel-module-usbtouchscreen \
-        kernel-module-video \
         kernel-module-virtio-input
 fi

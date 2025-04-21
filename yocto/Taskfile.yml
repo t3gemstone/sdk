@@ -45,7 +45,7 @@ tasks:
           -device qemu-xhci \
           -device usb-tablet \
           -device usb-kbd \
-          -device virtio-gpu-pci \
+          -device virtio-vga \
           -serial stdio \
           -initrd "{{ .QEMU_INITRAMFS_CPIO }}" \
           -kernel "{{ .QEMU_KERNEL_BIN }}" \

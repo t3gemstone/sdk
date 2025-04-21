@@ -44,15 +44,15 @@ user@host:$ devbox shell
 🚀 distrobox:workdir> task default
 
 # Build kernel, bootloader, initrd
-# Note: MACHINE can be 'intel-corei7-64', 't3-gem-o1' or 'beagley-ai'
+# Note: MACHINE can be 'intel-corei7-64', 't3-gem-o1', 'beagley-ai' or 'qemuarm64'
 # Note: First build takes approximately 2 hours and you need at least 32GB empty disk space
 🚀 distrobox:workdir> task yocto:build MACHINE=intel-corei7-64
 
 # Pack Gemstone Distro
-🚀 distrobox:workdir> task distro:build MACHINE=intel-corei7-64 DISTRO_ARCH=amd64 DISTRO_TYPE=desktop DISTRO_BASE=ubuntu IMG_SIZE=16G
+🚀 distrobox:workdir> task distro:build MACHINE=intel-corei7-64 DISTRO_TYPE=desktop DISTRO_BASE=ubuntu DISTRO_SUITE=jammy IMG_SIZE=16G
 
 # After build images, run virtual machine
-🚀 distrobox:workdir> task yocto:runqemu MACHINE=intel-corei7-64 DISTRO_ARCH=amd64 DISTRO_TYPE=desktop DISTRO_BASE=ubuntu WORKDIR=$PWD
+🚀 distrobox:workdir> task yocto:runqemu MACHINE=intel-corei7-64 DISTRO_TYPE=desktop DISTRO_BASE=ubuntu DISTRO_SUITE=jammy WORKDIR=$PWD
 ```
 
 ### Screencast
