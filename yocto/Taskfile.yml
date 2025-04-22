@@ -34,7 +34,7 @@ tasks:
       msg: "{{ .QEMU_DISK_FILE }} Image not found. Run <task distro:build MACHINE={{ .MACHINE }}>"
     cmds:
       - >
-        {{ if eq .MACHINE "qemuarm64" }}qemu-system-aarch64 -machine virt -cpu cortex-a57 -smp 4{{ else }}qemu-system-x86_64 -enable-kvm -machine pc -cpu host -smp $(nproc){{ end }} \
+        {{ if eq .MACHINE "qemuarm64" }}qemu-system-aarch64 -machine virt -cpu cortex-a57 -smp 4 -append 'root=/dev/vda2 rw init_fatal_sh=1 loglevel=4'{{ else }}qemu-system-x86_64 -enable-kvm -machine pc -cpu host -smp $(nproc) -append 'root=/dev/vda2 rw init_fatal_sh=1 loglevel=4 console=ttyS0,115200'{{ end }} \
           -m 4G \
           -netdev user,id=net0,hostfwd=tcp::10022-:22 \
           -device virtio-net-pci,netdev=net0,mac=52:54:00:12:34:02 \
@@ -48,5 +48,4 @@ tasks:
           -device virtio-vga \
           -serial stdio \
           -initrd "{{ .QEMU_INITRAMFS_CPIO }}" \
-          -kernel "{{ .QEMU_KERNEL_BIN }}" \
-          -append 'root=/dev/vda2 rw init_fatal_sh=1 loglevel=4'
+          -kernel "{{ .QEMU_KERNEL_BIN }}"
