@@ -1,3 +1,5 @@
+{{/* T3 Foundation Gemstone Project https://t3gemstone.org */}}
+{{/* SPDX-License-Identifier Apache-2.0 */}}
 {{/* https://github.com/go-debos/debos */}}
 {{/* https://github.com/go-debos/debos-recipes */}}
 {{/* https://pkg.go.dev/github.com/go-debos/debos/actions */}}
@@ -154,6 +156,7 @@ actions:
       cd $(mktemp -d)
       wget http://archive.raspberrypi.org/debian/pool/main/p/pixflat-icons/pixflat-icons_0.26_all.deb
       apt-get install -y ./pixflat-icons_0.26_all.deb
+
 {{ end }}
 
   - action: run
