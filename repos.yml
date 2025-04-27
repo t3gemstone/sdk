@@ -49,3 +49,8 @@ repositories:
     type: git
     url: https://git.ti.com/git/cc33xx-wlan/cc33xx-fw.git
     version: 988ded3a7d4d0e46de62e9ebfcb685c502bd9edf
+
+  src/wl18xx-fw:
+    type: git
+    url: https://git.ti.com/git/wilink8-wlan/wl18xx_fw.git
+    version: 685097375c6530c98ce052fcd160001abaa1b256
