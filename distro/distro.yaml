@@ -56,6 +56,8 @@ actions:
       - openssh-server
       - openssl
       - python3
+      - ssh
+      - usbutils
       - sudo
       - systemd
       - tar
@@ -65,6 +67,7 @@ actions:
       - wget
       - wpasupplicant
       - zip
+      - gpiod
 
   - action: apt
     recommends: false
@@ -126,8 +129,6 @@ actions:
       - xfconf
       - xfdesktop4
       - xfwm4
-      - usbutils
-      - ssh
 
   - action: apt
     recommends: false

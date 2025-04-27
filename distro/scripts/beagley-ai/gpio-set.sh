@@ -5,9 +5,6 @@ export DEBIAN_FRONTEND=noninteractive
 ROOTDIR="$1"
 
 
-apt-get update -y
-apt-get install -y gpiod
-
 if ! getent group gpio > /dev/null; then
     groupadd gpio
 else
