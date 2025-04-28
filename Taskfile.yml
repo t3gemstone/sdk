@@ -10,7 +10,7 @@ vars:
   DISTRO_BASE: '{{ .DISTRO_BASE | default "ubuntu" }}'
   DISTRO_SUITE: '{{ .DISTRO_SUITE | default "jammy" }}'
   DISTRO_ARCH: '{{ if eq .MACHINE "intel-corei7-64" }}amd64{{ else }}arm64{{ end }}'
-  IMG_RELEASE: '{{ .IMG_RELEASE | default "v2025.9" }}'
+  IMG_RELEASE: '{{ .IMG_RELEASE | default "v2025.10" }}'
   IMG_SIZE: '{{ .IMG_SIZE | default "4096M" }}'
   IMG_DEPLOY_DIR: '{{ .WORKDIR }}/build/debos'
   IMG_FILE_NAME: 'gemstone-{{ .DISTRO_TYPE }}-{{ .IMG_RELEASE }}-{{ .DISTRO_BASE }}-{{ .DISTRO_SUITE }}-{{ .MACHINE }}.img'
@@ -69,4 +69,3 @@ tasks:
       - distrobox rm gemstone-sdk --force || true
       - sudo docker stop gemstone-sdk || true
       - sudo docker rmi gemstone-sdk || true
-      - sudo docker system prune || true

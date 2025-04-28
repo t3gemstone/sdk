@@ -1,5 +1,6 @@
 {{/* T3 Foundation Gemstone Project https://t3gemstone.org */}}
 {{/* SPDX-License-Identifier Apache-2.0 */}}
+
 {{/* https://github.com/go-debos/debos */}}
 {{/* https://github.com/go-debos/debos-recipes */}}
 {{/* https://pkg.go.dev/github.com/go-debos/debos/actions */}}
@@ -47,6 +48,7 @@ actions:
       - fuse
       - gawk
       - gpg
+      - gpiod
       - htop
       - hwinfo
       - iputils-ping
@@ -60,6 +62,7 @@ actions:
       - openssh-server
       - openssl
       - python3
+      - ssh
       - sudo
       - systemd
       - tar
@@ -67,6 +70,7 @@ actions:
       - tzdata
       - udev
       - unzip
+      - usbutils
       - uuid-runtime
       - wget
       - wpasupplicant
