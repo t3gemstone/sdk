@@ -4,14 +4,11 @@ export DEBIAN_FRONTEND=noninteractive
 
 ROOTDIR="$1"
 
-
 if ! getent group gpio > /dev/null; then
     groupadd gpio
 else
     echo "[i] GPIO grup already exist."
 fi
-
-
 
 if groups "" | grep -q '\bgpio\b'; then
     echo "[i] The user is already in the GPIO group ."
