@@ -23,7 +23,7 @@ apt-get install -y \
     kernel-module-fusb302 \
     kernel-module-gb-usb \
     kernel-module-musb-hdrc \
-    kernel-module-plusb \ \
+    kernel-module-plusb \
     kernel-module-snd-usb-audio \
     kernel-module-ti-usb-3410-5052 \
     kernel-module-ums-usbat \
