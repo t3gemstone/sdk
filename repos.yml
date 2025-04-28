@@ -33,7 +33,7 @@ repositories:
   yocto/meta-gemstone:
     type: git
     url: git@github.com:t3gemstone/meta-gemstone.git
-    version: 7561e21c6f6fdb1b34160d866b0acf6eb2a1f355
+    version: 734586d5b18617d931048f7a6aee60cc8a7c1c19
 
   src/gem-tools:
     type: git
