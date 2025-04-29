@@ -232,6 +232,12 @@ actions:
     script: scripts/t3-gem-o1/install-firmware.sh {{ $workdir }} $ROOTDIR
 {{ end }}
 
+{{ if eq $machine "beagley-ai" "t3-gem-o1" }}
+  - action: run
+    chroot: true
+    script: scripts/all/setup-gpiod.sh
+{{ end }}
+
 {{ if eq $type "kiosk" "desktop" }}
   - action: overlay
     source: overlays/{{ $type }}/all
