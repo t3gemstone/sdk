@@ -35,11 +35,6 @@ repositories:
     url: git@github.com:t3gemstone/meta-gemstone.git
     version: c0543be99e793cdb0d3ddd1455e5493e28ed9fbe
 
-  src/gem-tools:
-    type: git
-    url: git@github.com:t3gemstone/gem-tools.git
-    version: main
-
   src/ti-img-rogue-umlibs:
     type: git
     url: https://git.ti.com/git/graphics/ti-img-rogue-umlibs.git
