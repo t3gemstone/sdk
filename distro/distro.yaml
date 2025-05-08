@@ -44,6 +44,7 @@ actions:
       - dialog
       - dnsmasq-base
       - dosfstools
+      - ethtool
       - file
       - fuse
       - gawk
@@ -62,6 +63,7 @@ actions:
       - openssh-server
       - openssl
       - python3
+      - rsync
       - ssh
       - sudo
       - systemd
@@ -90,11 +92,13 @@ actions:
   - action: apt
     recommends: false
     packages:
+      - kmscube
       - libdrm-dev
       - libxcb-cursor0
       - openbox
       - python3-pyqt5
       - python3-pyqtgraph
+      - vim-tiny
       - x11-xserver-utils
       - xinit
       - xserver-xorg-core
@@ -124,6 +128,7 @@ actions:
       - ristretto
       - thunar
       - thunar-archive-plugin
+      - vim-tiny
       - xfce4-appfinder
       - xfce4-indicator-plugin
       - xfce4-panel
@@ -146,6 +151,7 @@ actions:
       - engrampa
       - fonts-jetbrains-mono
       - fonts-noto-core
+      - kmscube
       - libdrm-dev
       - mate-calc
       - network-manager-gnome

@@ -1,7 +1,12 @@
 # vim: set ft=bash:
 # -*- mode: bash -*-
 
-export KIOSK_BIN="/usr/local/bin/kiosk"
+export PATH="$HOME/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/qt6:$LD_LIBRARY_PATH"
+
+# Start uxterm if you want to enter a terminal instead of running application directly
+# export KIOSK_BIN="uxterm"
+export KIOSK_BIN="kiosk"
 export KIOSK_DISPLAY="VGA-1"
 export KIOSK_RESOLUTION="800x600"
 export KIOSK_REFRESH_RATE="60"

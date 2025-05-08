@@ -10,10 +10,21 @@ xset s off
 # Set manual resolution for X
 xrandr --output "$KIOSK_DISPLAY" --mode "$KIOSK_RESOLUTION" --rate "$KIOSK_REFRESH_RATE"
 
+# Remove log file if it exceeds the maximum size
+readonly LOG_PATH="$HOME/kiosk.log"
+readonly MAXIMUM_LOG_SIZE=104857600
+readonly ACTUAL_LOG_SIZE=$(wc -c <"$LOG_PATH")
+if [ "$ACTUAL_LOG_SIZE" -ge "$MAXIMUM_LOG_SIZE" ]; then
+    echo "$LOG_PATH log size exceeded $MAXIMUM_LOG_SIZE bytes, removing the file" \
+    | logger --tag "kiosk" --priority user.warning
+    rm -r "$LOG_PATH"
+fi
+
 # Restart app if terminated
 while true; do
     echo "starting $KIOSK_BIN"  | logger --tag "kiosk" --priority user.info
-    "$KIOSK_BIN"
+    # Log program output to file with timestamps
+    "$KIOSK_BIN" 2>&1 | while read line; do echo "$(date '+%Y-%m-%d %H:%M:%S'): $line"; done | tee -a "$HOME/kiosk.log"
     echo "$KIOSK_BIN terminated"  | logger --tag "kiosk" --priority user.warning
     sleep 1
 done
