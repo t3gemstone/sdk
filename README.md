@@ -44,7 +44,7 @@ user@host:$ devbox shell
 🚀 distrobox:workdir> task default
 
 # Build kernel, bootloader, initrd
-# Note: MACHINE can be 'intel-corei7-64', 't3-gem-o1', 'beagley-ai' or 'qemuarm64'
+# Note: MACHINE can be 'intel-corei7-64', 't3-gem-o1', 't3-gem-s1', 'beagley-ai' or 'qemuarm64'
 # Note: First build takes approximately 2 hours and you need at least 32GB empty disk space
 🚀 distrobox:workdir> task yocto:build MACHINE=intel-corei7-64
 

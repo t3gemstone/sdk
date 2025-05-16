@@ -1,0 +1,17 @@
+[connection]
+id=eth0-dhcp
+uuid=811be2a0-e3c6-47f9-8462-c21f54ef8f80
+type=ethernet
+interface-name=eth0
+
+[ethernet]
+auto-negotiate=true
+
+[ipv4]
+method=auto
+
+[ipv6]
+addr-gen-mode=stable-privacy
+method=auto
+
+[proxy]

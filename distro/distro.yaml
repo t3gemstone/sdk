@@ -224,21 +224,21 @@ actions:
     script: scripts/beagley-ai/install-firmware.sh {{ $workdir }} $ROOTDIR
 {{ end }}
 
-{{ if eq $machine "t3-gem-o1" }}
+{{ if eq $machine "t3-gem-o1" "t3-gem-s1" }}
   - action: run
     chroot: true
-    script: scripts/t3-gem-o1/setup-bootfiles.sh
+    script: scripts/{{ $machine }}/setup-bootfiles.sh
 
   - action: run
     chroot: false
-    script: scripts/t3-gem-o1/install-dtbs.sh {{ $workdir }} $ROOTDIR
+    script: scripts/{{ $machine }}/install-dtbs.sh {{ $workdir }} $ROOTDIR
 
   - action: run
     chroot: false
-    script: scripts/t3-gem-o1/install-firmware.sh {{ $workdir }} $ROOTDIR
+    script: scripts/{{ $machine }}/install-firmware.sh {{ $workdir }} $ROOTDIR
 {{ end }}
 
-{{ if eq $machine "beagley-ai" "t3-gem-o1" }}
+{{ if eq $machine "beagley-ai" "t3-gem-o1" "t3-gem-s1"}}
   - action: run
     chroot: true
     script: scripts/all/setup-gpiod.sh
@@ -271,7 +271,7 @@ actions:
       gtk-update-icon-cache --force --ignore-theme-index /usr/share/icons/hicolor
 {{ end }}
 
-{{ if eq $machine "beagley-ai" "t3-gem-o1" }}
+{{ if eq $machine "beagley-ai" "t3-gem-o1" "t3-gem-s1" }}
   - action: overlay
     source: overlays/minimal/usb-gadgets
     destination: /
@@ -318,7 +318,7 @@ actions:
   - action: image-partition
     imagename: {{ $image }}
     imagesize: {{ $imagesize }}
-{{ if eq $machine "beagley-ai" "t3-gem-o1" "qemuarm64" }}
+{{ if eq $machine "beagley-ai" "t3-gem-o1" "t3-gem-s1" "qemuarm64" }}
     partitiontype: msdos
     mountpoints:
       - mountpoint: /
