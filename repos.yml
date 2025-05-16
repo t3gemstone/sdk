@@ -7,7 +7,7 @@ repositories:
 
   yocto/meta-ti:
     type: git
-    url: git://git.ti.com/arago-project/meta-ti.git
+    url: https://git.yoctoproject.org/meta-ti
     version: 4213a71a8eaed4a57562c0608f9ba29efc39eede
 
   yocto/meta-arm:
