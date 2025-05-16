@@ -57,15 +57,15 @@ tasks:
   box:
     desc: Enter Distrobox's Ubuntu 22.04 image to build yocto&distro
     cmds:
-      - distrobox-list | grep -q 'gemstone-sdk' || docker build -f Dockerfile -t gemstone-sdk:latest .
+      - distrobox-list | grep -q 'gemstone-distrobox' || docker build -f Dockerfile -t t3gemstone/distrobox:latest .
       - distrobox-assemble create --file distrobox.ini
-      - distrobox-enter --additional-flags "--tty" --name gemstone-sdk --no-workdir
+      - distrobox-enter --additional-flags "--tty" --name gemstone-distrobox --no-workdir
 
   destroy:
     prompt: This is a dangerous command... Do you want to continue?
     desc: Destroy everything including docker images, distrobox etc.
     cmds:
-      - distrobox stop gemstone-sdk --yes || true
-      - distrobox rm gemstone-sdk --force || true
-      - sudo docker stop gemstone-sdk || true
-      - sudo docker rmi gemstone-sdk || true
+      - distrobox stop gemstone-distrobox --yes || true
+      - distrobox rm gemstone-distrobox --force || true
+      - sudo docker stop t3gemstone/gemstone || true
+      - sudo docker rmi t3gemstone/gemstone || true
