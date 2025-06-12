@@ -5,3 +5,18 @@
 version: '3'
 
 tasks:
+  publish-debs:
+    desc: Publish the latest DEB files to the package repository
+    cmds:
+      - utils/publish_debs.sh {{ .DEB_DIR }} {{ .MACHINE }} {{ .DISTRO }}
+    requires:
+        vars:
+          - name: DEB_DIR
+          - name: MACHINE
+            enum: [ beagley-ai, intel-corei7-64, t3-gem-o1 ]
+          - name: DISTRO
+            enum:
+              - jammy     # Ubuntu 22
+              - noble     # Ubuntu 24
+              - bullseye  # Debian 11
+              - bookworm  # Debian 12
