@@ -1,0 +1,107 @@
+name: Create Distro Image with Debos
+
+on:
+  workflow_dispatch:
+
+env:
+    RELEASE: v2025.10
+    WORKDIR: /home/workdir
+
+jobs:
+  build:
+    name: ${{ matrix.machine }}/${{ matrix.base }}/${{ matrix.suite }}/${{ matrix.type }}
+    runs-on: [self-hosted, debos-runner]
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: true
+      matrix:
+        machine: [beagley-ai, t3-gem-o1, intel-corei7-64]
+        base:    [ubuntu]
+        suite:   [jammy]
+        type:    [minimal, kiosk, desktop]
+        exclude:
+          - base: debian
+            suite: jammy
+          - base: debian
+            suite: noble
+          - base: ubuntu
+            suite: bookworm
+        include:
+          - machine: beagley-ai
+            arch: arm64
+          - machine: t3-gem-o1
+            arch: arm64
+          - machine: intel-corei7-64
+            arch: amd64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Local Cache on Self-hosted Runner
+        uses: corca-ai/local-cache@v3
+        with:
+          path: .repocache
+          key: repos-${{ hashFiles('repos.yml') }}
+          base: /var/lib/ci/caches
+
+      - name: Install python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch repos
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/.repocache"
+          python -m pip install vcstool
+          vcs import "$GITHUB_WORKSPACE/.repocache" < ${{ github.workspace }}/repos.yml
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Enable binfmt for all platforms
+        run: docker run --rm --privileged tonistiigi/binfmt --install all
+
+      - name: Run debos
+        env:
+          IMG_FILE_NAME: gemstone-${{ matrix.type }}-${{ env.RELEASE }}-${{ matrix.base }}-${{ matrix.suite }}-${{ matrix.machine }}.img
+          IMG_SIZE: ${{ matrix.type == 'minimal' && '800M' || '4096M' }}
+        run: |
+          docker run --rm \
+            --privileged \
+            --cgroupns host \
+            --net=host \
+            --security-opt seccomp=unconfined \
+            --volume /dev:/dev \
+            --volume /run/udev:/run/udev:ro \
+            --volume debos-scratch:/scratch \
+            --volume "$GITHUB_WORKSPACE:${{ env.WORKDIR }}" \
+            --volume "$GITHUB_WORKSPACE/.repocache/src:${{ env.WORKDIR }}/src" \
+            --workdir "${{ env.WORKDIR }}" \
+            t3gemstone/debos:1.1.3.6 \
+            --scratchdir=/scratch \
+            --disable-fakemachine \
+            --artifactdir=${{ env.WORKDIR }} \
+            --template-var="workdir:${{ env.WORKDIR }}" \
+            --template-var="machine:${{ matrix.machine }}" \
+            --template-var="base:${{ matrix.base }}" \
+            --template-var="type:${{ matrix.type }}" \
+            --template-var="suite:${{ matrix.suite }}" \
+            --template-var="release:${{ env.RELEASE }}" \
+            --template-var="image:${{ env.IMG_FILE_NAME }}" \
+            --template-var="imagepath:${{ env.WORKDIR }}/${{ env.IMG_FILE_NAME }}" \
+            --template-var="imagesize:${{ env.IMG_SIZE }}" \
+            --template-var="arch:${{ matrix.arch }}" \
+            --template-var="ci:true" \
+            --verbose \
+            ${{ env.WORKDIR }}/distro/distro.yaml 2>&1
+
+      - name: Upload Image
+        uses: actions/upload-artifact@v4
+        env:
+          IMG_FILE_NAME: gemstone-${{ matrix.type }}-${{ env.RELEASE }}-${{ matrix.base }}-${{ matrix.suite }}-${{ matrix.machine }}.img
+        with:
+          name: ${{ env.IMG_FILE_NAME }}
+          path: ${{ github.workspace }}/${{ env.IMG_FILE_NAME }}

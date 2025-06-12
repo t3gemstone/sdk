@@ -7,7 +7,7 @@ repositories:
 
   yocto/meta-ti:
     type: git
-    url: git://git.ti.com/arago-project/meta-ti.git
+    url: git://git.yoctoproject.org/meta-ti
     version: 4213a71a8eaed4a57562c0608f9ba29efc39eede
 
   yocto/meta-arm:
@@ -32,8 +32,8 @@ repositories:
 
   yocto/meta-gemstone:
     type: git
-    url: git@github.com:t3gemstone/meta-gemstone.git
-    version: c0543be99e793cdb0d3ddd1455e5493e28ed9fbe
+    url: https://github.com/t3gemstone/meta-gemstone.git
+    version: f06182f2f74252b842ef4621dfe2c07a5dec7bbd
 
   src/ti-img-rogue-umlibs:
     type: git
