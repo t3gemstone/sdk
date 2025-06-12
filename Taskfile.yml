@@ -22,6 +22,8 @@ includes:
   distro: distro
   utils: utils
 
+dotenv: ['utils/.env']
+
 tasks:
 
   default:

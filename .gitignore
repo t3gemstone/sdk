@@ -24,3 +24,4 @@ yocto/**
 
 mimeinfo.cache
 icon-theme.cache
+utils/.env
