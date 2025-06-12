@@ -16,6 +16,7 @@
 {{- $image := or .image (printf "gemstone-%s-%s-%s-%s-%s.img" $type $release $base $suite $machine) -}}
 {{- $imagepath := or .imagepath (printf "%s/build/debos/%s" $workdir $image) -}}
 {{- $imagesize := or .imagesize "4096M" -}}
+{{- $ci := or .ci "false" -}}
 
 architecture: {{ $arch }}
 
@@ -204,7 +205,7 @@ actions:
 
   - action: run
     chroot: true
-    script: scripts/{{ $machine }}/install-local-apt.sh {{ $machine }} {{ $type }}
+    script: scripts/{{ $machine }}/install-local-apt.sh {{ $machine }} {{ $type }} {{ $ci }}
 
   - action: run
     chroot: true
@@ -212,27 +213,11 @@ actions:
 
 {{ if eq $machine "beagley-ai" }}
   - action: run
-    chroot: true
-    script: scripts/beagley-ai/setup-bootfiles.sh
-
-  - action: run
-    chroot: false
-    script: scripts/beagley-ai/install-dtbs.sh {{ $workdir }} $ROOTDIR
-
-  - action: run
     chroot: false
     script: scripts/beagley-ai/install-firmware.sh {{ $workdir }} $ROOTDIR
 {{ end }}
 
 {{ if eq $machine "t3-gem-o1" }}
-  - action: run
-    chroot: true
-    script: scripts/t3-gem-o1/setup-bootfiles.sh
-
-  - action: run
-    chroot: false
-    script: scripts/t3-gem-o1/install-dtbs.sh {{ $workdir }} $ROOTDIR
-
   - action: run
     chroot: false
     script: scripts/t3-gem-o1/install-firmware.sh {{ $workdir }} $ROOTDIR

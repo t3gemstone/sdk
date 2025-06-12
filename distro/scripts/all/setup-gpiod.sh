@@ -10,7 +10,7 @@ else
     echo "[i] GPIO grup already exist."
 fi
 
-if groups "" | grep -q '\bgpio\b'; then
+if groups | grep -q '\bgpio\b'; then
     echo "[i] The user is already in the GPIO group ."
 else
     usermod -a -G gpio gemstone
@@ -18,4 +18,4 @@ fi
 
 UDEV_RULE="$ROOTDIR/etc/udev/rules.d/99-gpio.rules"
 echo "[+] Generating Udev udev rule..."
-echo 'SUBSYSTEM=="gpio", KERNEL=="gpiochip*", GROUP="gpio", MODE="660"' | tee $UDEV_RULE
+echo 'SUBSYSTEM=="gpio", KERNEL=="gpiochip*", GROUP="gpio", MODE="660"' | tee "$UDEV_RULE"
