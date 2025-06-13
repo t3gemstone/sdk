@@ -4,7 +4,7 @@
 version: '3'
 
 vars:
-  TARGET: gemstone-image-rd
+  TARGET: gemstone-boot-files
   TEMPLATECONF: "{{ .WORKDIR }}/yocto/meta-gemstone/conf/templates/{{ .MACHINE }}/"
   OE_INIT_CMD: TEMPLATECONF={{ .TEMPLATECONF }} source {{ .WORKDIR }}/yocto/poky/oe-init-build-env {{ .YOCTO_BUILD_DIR }} && cd {{ .WORKDIR }}
   DEPLOY_DIR: "{{ .WORKDIR }}/build/tmp-musl/deploy/images/{{ .MACHINE }}"
