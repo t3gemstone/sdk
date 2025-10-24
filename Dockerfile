@@ -101,4 +101,9 @@ RUN cd /tmp && \
     cp /tmp/debos/bin/debos /usr/local/bin && \
     rm -rf /tmp/debos
 
+# swugenerator
+RUN git clone https://github.com/sbabic/swugenerator.git && \
+    cd swugenerator && \
+    pip install .
+
 CMD ["bash"]

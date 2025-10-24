@@ -1,0 +1,63 @@
+software =
+{
+    version = "2025.12";
+
+    t3-gem-o1 = {
+        hardware-compatibility = ["1.0"];
+        rootfsA: {
+            images: (
+                {
+                    filename = "rootfs.btrfs";
+                    type = "raw";
+                    compressed = "zstd";
+                    device = "/dev/disk/by-label/ROOTFS_A";
+                }
+            );
+            bootenv: (
+                {
+                    name: "slot";
+                    value: "A";
+                },
+                {
+                    name: "upgrade_available";
+                    value: "1";
+                },
+            );
+            scripts: (
+                {
+                    filename = "update-partition.sh";
+                    type = "postinstall";
+                    data = "A"
+                }
+            );
+        }
+
+        rootfsB: {
+            images: (
+                {
+                    filename = "rootfs.btrfs";
+                    type = "raw";
+                    compressed = "zstd";
+                    device = "/dev/disk/by-label/ROOTFS_B";
+                }
+            );
+            bootenv: (
+                {
+                    name: "slot";
+                    value: "B";
+                },
+                {
+                    name: "upgrade_available";
+                    value: "1";
+                },
+            );
+            scripts: (
+                {
+                    filename = "update-partition.sh";
+                    type = "postinstall";
+                    data = "B"
+                }
+            );
+        }
+    }
+};

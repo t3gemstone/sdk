@@ -130,9 +130,14 @@ actions:
   - action: apt
     recommends: false
     packages:
+      - btrfs-progs
       - kmscube
+      - libarchive-dev
+      - libconfig-dev
       - libdrm-dev
+      - liblua5.2-dev
       - libxcb-cursor0
+      - libyaml-dev
       - openbox
       - python3-pyqt5
       - python3-pyqtgraph
@@ -338,6 +343,12 @@ actions:
     chroot: true
     script: scripts/all/disable-services.sh {{ $type }}
 
+{{ if eq $type "kiosk" }}
+  - action: run
+    chroot: true
+    script: scripts/t3-gem-o1/setup-swupdate.sh
+{{ end }}
+
 {{ if ne $machine "qemuarm64"  }}
   - action: run
     chroot: true
@@ -408,4 +419,7 @@ actions:
 {{ end }}
 
   - action: filesystem-deploy
+{{ if eq $type "kiosk" }}
+    setup-fstab: false
+{{ end }}
     description: Deploying filesystem onto image

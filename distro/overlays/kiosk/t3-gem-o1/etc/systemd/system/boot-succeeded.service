@@ -1,0 +1,9 @@
+[Unit]
+Description=Inform bootloader about succeeded boot
+
+[Service]
+Type=oneshot
+ExecStart=sh -c 'fw_setenv upgrade_available 0 && fw_setenv bootcount 0 && fw_setenv ustate 0 && touch /boot_succeeded'
+
+[Install]
+WantedBy=multi-user.target

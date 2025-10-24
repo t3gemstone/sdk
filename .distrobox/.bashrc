@@ -38,3 +38,5 @@ if [ -f $BANNER ]; then
 fi
 
 cd $WORKDIR
+xrdb -merge ~/.Xresources
+

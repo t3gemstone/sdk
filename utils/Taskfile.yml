@@ -22,3 +22,8 @@ tasks:
               - bullseye     # Debian 11
               - bookworm     # Debian 12
               - yirmiuc-deb  # Pardus 23
+
+  generate-swu:
+    desc: Generate SWU images from debos generated images
+    cmds:
+      - utils/swupdate/swu-helper.sh {{ .WORKDIR }}/build

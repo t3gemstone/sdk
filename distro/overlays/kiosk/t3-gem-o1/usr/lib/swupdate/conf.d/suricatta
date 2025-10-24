@@ -1,0 +1,2 @@
+SWUPDATE_ARGS="-v -k /usr/lib/swupdate/swu_signing.cert.pem -K /usr/lib/swupdate/aes -v -e t3-gem-o1,${next_slot}"
+SWUPDATE_SURICATTA_ARGS="-S general -u 192.168.1.11:8080 -p 5"

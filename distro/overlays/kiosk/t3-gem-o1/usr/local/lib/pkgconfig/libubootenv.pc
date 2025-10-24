@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2019-2021 Stefano Babic <stefano.babic@swupdate.org>
+#
+# SPDX-License-Identifier:     LGPL-2.1-or-later
+
+prefix=/usr/local
+exec_prefix=/usr/local/bin
+libdir=/usr/local/lib
+includedir=/usr/local/include
+
+Name: libubootenv
+Description: Library to access U-Boot environment
+Version: 0.3.6
+Libs: -L${libdir} -lubootenv -lz
+Cflags: -I${includedir}

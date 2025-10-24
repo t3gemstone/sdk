@@ -1,0 +1,13 @@
+[Unit]
+Description=SWUpdate socket listener
+Documentation=https://github.com/sbabic/swupdate
+Documentation=https://sbabic.github.io/swupdate
+
+[Socket]
+ListenStream=/run/swupdate/sockinstctrl
+ListenStream=/run/swupdate/swupdateprog
+SocketMode=0660
+SocketGroup=swupdate
+
+[Install]
+WantedBy=sockets.target
