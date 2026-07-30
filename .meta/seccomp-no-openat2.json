@@ -1,0 +1,16 @@
+{
+  "comment": "Unconfined except openat2(), which is forced to return ENOSYS. Ubuntu's tar >= 1.34+dfsg-1ubuntu0.1.22.04.4 uses openat2(RESOLVE_BENEATH) during extraction (CVE-2025-45582 backport). Yocto's pseudo does not intercept openat2, loses track of the returned directory fd, and do_package fails with 'Cannot mkdir: Bad address'. Denying openat2 makes tar take its pre-5.6-kernel openat() fallback, which pseudo does intercept.",
+  "defaultAction": "SCMP_ACT_ALLOW",
+  "architectures": [
+    "SCMP_ARCH_X86_64",
+    "SCMP_ARCH_X86",
+    "SCMP_ARCH_X32"
+  ],
+  "syscalls": [
+    {
+      "names": ["openat2"],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 38
+    }
+  ]
+}

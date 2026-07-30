@@ -47,7 +47,7 @@ jobs:
       - name: Build the image
         run: |
           docker run --rm --security-opt apparmor=unconfined \
-            --security-opt seccomp=unconfined \
+            --security-opt seccomp="$GITHUB_WORKSPACE/.meta/seccomp-no-openat2.json" \
             -v "$GITHUB_WORKSPACE:/work" \
             -v "ci-yocto-cache:/cache:rw" \
             --env "MACHINE=${{ matrix.machine }}" \
