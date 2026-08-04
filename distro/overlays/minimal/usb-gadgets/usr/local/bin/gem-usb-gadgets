@@ -13,7 +13,9 @@ G_MULTI_DIR="/sys/kernel/config/usb_gadget/g_multi"
 
 USB_VID="0x1d6b"
 USB_PID="0x0104"
-USB_BCDDEVICE="0x0404"
+# Bumped from 0x0404 when the composite interface layout changed, so that hosts
+# re-evaluate the device instead of reusing cached per-interface driver bindings.
+USB_BCDDEVICE="0x0405"
 USB_BCDUSB="0x0200"
 
 ETH_HOST_MAC_ADDR="02:12:34:56:78:9A"
@@ -137,8 +139,12 @@ function run()
 
     echo 500 > configs/c.1/MaxPower
 
-    enable_usb_serial
+    # RNDIS must be linked first: the Windows RNDIS class driver expects the
+    # RNDIS control interface to be interface 0 and fails with Code 10
+    # otherwise. Matches the function order of the reference bb-usb-gadgets
+    # script this file is based on.
     enable_usb_ethernet
+    enable_usb_serial
     enable_mass_storage
 
     sleep 5
