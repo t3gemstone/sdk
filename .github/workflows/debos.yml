@@ -72,48 +72,52 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
-          platforms: arm64
-          image: tonistiigi/binfmt:latest
+            # qemu-v8.1.x through at least v9.0.0 (and reportedly v9.2.x/v10.x too) segfault
+            # during arm64 debootstrap around zlib1g/libc-bin/ldconfig:
+            # https://gitlab.com/qemu-project/qemu/-/issues/2377
+            # https://github.com/tonistiigi/binfmt/issues/240
+            # v7.0.0-28 predates the regression and is a known-good fallback.
+            image: tonistiigi/binfmt:qemu-v7.0.0-28
+
+      - name: Disable ASLR (qemu-v7.0.0-28 is built with --disable-pie)
+        # binfmt builds before qemu-v8.1 use --disable-pie, which segfaults under
+        # emulation when the host has ASLR enabled (the GitHub runner default):
+        # https://github.com/tonistiigi/binfmt/issues/215
+        run: sudo sysctl -w kernel.randomize_va_space=0
 
       - name: Run debos
         env:
           IMG_FILE_NAME: gemstone-${{ matrix.type }}-${{ env.RELEASE }}-${{ matrix.base }}-${{ matrix.suite }}-${{ matrix.machine }}.img
           IMG_SIZE: ${{ matrix.type == 'minimal' && '1024M' || matrix.type == 'kiosk' && '4096M' || '16384M' }}
         run: |
-          for attempt in 1 2 3; do
-              echo "--- debos attempt $attempt ---"
-              docker run --rm \
-                --privileged \
-                --cgroupns host \
-                --net=host \
-                --security-opt seccomp=unconfined \
-                --volume /dev:/dev \
-                --volume /run/udev:/run/udev:ro \
-                --volume debos-scratch:/scratch \
-                --volume "$GITHUB_WORKSPACE:${{ env.WORKDIR }}" \
-                --volume "$GITHUB_WORKSPACE/.repos/src:${{ env.WORKDIR }}/src" \
-                --workdir "${{ env.WORKDIR }}" \
-                t3gemstone/debos:1.1.3.7 \
-                --scratchdir=/scratch \
-                --disable-fakemachine \
-                --artifactdir=${{ env.WORKDIR }} \
-                --template-var="workdir:${{ env.WORKDIR }}" \
-                --template-var="machine:${{ matrix.machine }}" \
-                --template-var="base:${{ matrix.base }}" \
-                --template-var="type:${{ matrix.type }}" \
-                --template-var="suite:${{ matrix.suite }}" \
-                --template-var="release:${{ env.RELEASE }}" \
-                --template-var="image:${{ env.IMG_FILE_NAME }}" \
-                --template-var="imagepath:${{ env.WORKDIR }}/${{ env.IMG_FILE_NAME }}" \
-                --template-var="imagesize:${{ env.IMG_SIZE }}" \
-                --template-var="arch:${{ matrix.arch }}" \
-                --template-var="ci:true" \
-                --verbose \
-                ${{ env.WORKDIR }}/distro/distro.yaml 2>&1 && break
-              echo "debos attempt $attempt failed, retrying..."
-              docker volume rm debos-scratch 2>/dev/null || true
-              docker volume create debos-scratch
-          done
+          docker run --rm \
+            --privileged \
+            --cgroupns host \
+            --net=host \
+            --security-opt seccomp=unconfined \
+            --volume /dev:/dev \
+            --volume /run/udev:/run/udev:ro \
+            --volume debos-scratch:/scratch \
+            --volume "$GITHUB_WORKSPACE:${{ env.WORKDIR }}" \
+            --volume "$GITHUB_WORKSPACE/.repos/src:${{ env.WORKDIR }}/src" \
+            --workdir "${{ env.WORKDIR }}" \
+            t3gemstone/debos:1.1.3.7 \
+            --scratchdir=/scratch \
+            --disable-fakemachine \
+            --artifactdir=${{ env.WORKDIR }} \
+            --template-var="workdir:${{ env.WORKDIR }}" \
+            --template-var="machine:${{ matrix.machine }}" \
+            --template-var="base:${{ matrix.base }}" \
+            --template-var="type:${{ matrix.type }}" \
+            --template-var="suite:${{ matrix.suite }}" \
+            --template-var="release:${{ env.RELEASE }}" \
+            --template-var="image:${{ env.IMG_FILE_NAME }}" \
+            --template-var="imagepath:${{ env.WORKDIR }}/${{ env.IMG_FILE_NAME }}" \
+            --template-var="imagesize:${{ env.IMG_SIZE }}" \
+            --template-var="arch:${{ matrix.arch }}" \
+            --template-var="ci:true" \
+            --verbose \
+            ${{ env.WORKDIR }}/distro/distro.yaml
 
       - name: Upload Image
         uses: actions/upload-artifact@v4
