@@ -34,6 +34,7 @@ GREEN='\033[0;32m'
 NOCOLOR='\033[0m'
 
 IMX219_CAM_FMT="${IMX219_CAM_FMT:-[fmt:SRGGB8_1X8/1920x1080]}"
+IMX230_CAM_FMT="${IMX230_CAM_FMT:-[fmt:SRGGB10_1X10/1920x1080 field:none]}"
 IMX390_CAM_FMT="${IMX390_CAM_FMT:-[fmt:SRGGB12_1X12/1936x1100 field: none]}"
 OV2312_CAM_FMT="${OV2312_CAM_FMT:-[fmt:SBGGI10_1X10/1600x1300 field: none]}"
 OV5640_CAM_FMT="${OV5640_CAM_FMT:-[fmt:YUYV8_1X16/1280x720@1/30]}"
@@ -288,6 +289,46 @@ setup_imx219(){
     done
 }
 
+setup_imx230(){
+    count=0
+
+    for media_id in {0..3}; do
+        for name in `media-ctl -d $media_id -p 2>/dev/null | grep entity | grep arducam-pivariety | cut -d ' ' -f 5`; do
+            CAM_ENTITY="arducam-pivariety $name"
+            CAM_SUBDEV=`media-ctl -d "$media_id" -p -e "$CAM_ENTITY" | grep v4l-subdev | awk '{print $4}'`
+
+            media-ctl -d "$media_id" --set-v4l2 "\"$CAM_ENTITY\":0 $IMX230_CAM_FMT"
+
+            CSI_BRIDGE_NAME=`media-ctl -d "$media_id" -p -e "$CAM_ENTITY" | grep csi-bridge | cut -d "\"" -f 2`
+            CSI2RX_NAME=`media-ctl -d "$media_id" -p -e "$CSI_BRIDGE_NAME" | grep "ticsi2rx\"" | cut -d "\"" -f 2`
+            CSI2RX_CONTEXT_NAME="$CSI2RX_NAME context 0"
+
+            media-ctl -d "$media_id" --set-v4l2 "\"$CSI_BRIDGE_NAME\":0 $IMX230_CAM_FMT"
+            media-ctl -d "$media_id" --set-v4l2 "\"$CSI_BRIDGE_NAME\":1 $IMX230_CAM_FMT"
+            media-ctl -d "$media_id" --set-v4l2 "\"$CSI2RX_NAME\":0 $IMX230_CAM_FMT"
+            media-ctl -d "$media_id" --set-v4l2 "\"$CSI2RX_NAME\":1 $IMX230_CAM_FMT"
+
+            CAM_DEV=`media-ctl -d "$media_id" -p -e "$CSI2RX_CONTEXT_NAME" | grep video | awk '{print $4}'`
+            CAM_DEV_NAME=/dev/video-imx230-cam$count
+            CAM_SUBDEV_NAME=/dev/v4l-imx230-subdev$count
+
+            ln -snf "$CAM_DEV" "$CAM_DEV_NAME"
+            ln -snf "$CAM_SUBDEV" "$CAM_SUBDEV_NAME"
+
+            v4l2-ctl -d "$CAM_DEV_NAME" --set-fmt-video=width=1920,height=1080,pixelformat=RG10
+
+            echo -e "${GREEN}IMX230 Camera $count detected${NOCOLOR}"
+            echo " device = $CAM_DEV_NAME"
+            echo " name = imx230"
+            echo " format = $IMX230_CAM_FMT"
+            echo " subdev_id = $CAM_SUBDEV_NAME"
+            echo " isp_required = yes"
+
+            count=$(($count + 1))
+        done
+    done
+}
+
 setup_ov5640(){
     count=0
     for media_id in {0..3}; do
@@ -348,6 +389,7 @@ J721E)
 J722S)
 	setup_USB_camera
 	setup_imx219
+	setup_imx230
 	setup_ov5640
 	setup_ov2312
 	setup_imx390
