@@ -20,6 +20,7 @@ fi
 apt-get update -y
 apt-get install -y \
     kernel-image-image-6.12.24-ti \
+    kernel-module-arducam-pivariety-6.12.24-ti \
     kernel-module-at24-6.12.24-ti \
     kernel-module-bluetooth-6.12.24-ti \
     kernel-module-br-netfilter-6.12.24-ti \
