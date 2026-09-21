@@ -1,0 +1,24 @@
+# T3 Foundation Gemstone Project [t3gemstone.org]
+# SPDX-License-Identifier: Apache-2.0
+
+version: '3'
+
+vars:
+  GPU_STAGE_DIR: '{{ .WORKDIR }}/build/graphics/{{ .MACHINE }}'
+
+tasks:
+
+  build:
+    desc: Cross build TI mesa-pvr (PowerVR GPU userspace) for the target rootfs
+    cmds:
+      - chmod +x {{ .WORKDIR }}/graphics/*.sh
+      - '{{ .WORKDIR }}/graphics/build-mesa-pvr.sh {{ .WORKDIR }} {{ .MACHINE }} {{ .JOBS | default "" }}'
+    requires:
+      vars:
+        - name: MACHINE
+          enum: [ t3-gem-o1 ]
+
+  clean:
+    desc: Remove the built GPU userspace
+    cmds:
+      - rm -rf {{ .GPU_STAGE_DIR }}

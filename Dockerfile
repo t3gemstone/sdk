@@ -115,4 +115,27 @@ RUN cd /tmp && \
     cp /tmp/debos/bin/debos /usr/local/bin && \
     rm -rf /tmp/debos
 
+# arm64 cross toolchain for 'task graphics:build' (TI mesa-pvr).
+# The GPU userspace has to match the target rootfs ABI (jammy, glibc 2.35), so it
+# cannot come out of Yocto -- that toolchain is musl. Cross building here against
+# the arm64 ports archive gives binaries the Ubuntu/Debian rootfs can actually load.
+RUN sed -i 's|^deb http|deb [arch=amd64] http|' /etc/apt/sources.list && \
+    printf '%s\n' \
+        'deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy main restricted universe multiverse' \
+        'deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-updates main restricted universe multiverse' \
+        'deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-security main restricted universe multiverse' \
+        > /etc/apt/sources.list.d/arm64-ports.list && \
+    dpkg --add-architecture arm64 && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        bison \
+        crossbuild-essential-arm64 \
+        flex \
+        ninja-build \
+        python3-mako \
+        libdrm-dev:arm64 \
+        libexpat1-dev:arm64 \
+        libzstd-dev:arm64 \
+        zlib1g-dev:arm64
+
 CMD ["bash"]

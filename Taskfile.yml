@@ -25,6 +25,7 @@ vars:
 includes:
   android: android
   distro: distro
+  graphics: graphics
   utils: utils
   yocto: yocto
 

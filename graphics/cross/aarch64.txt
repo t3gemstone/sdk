@@ -1,0 +1,27 @@
+# T3 Foundation Gemstone Project [t3gemstone.org]
+# SPDX-License-Identifier: Apache-2.0
+#
+# Meson cross file for building target GPU userspace inside the gemstone-sdk box.
+# The toolchain and the arm64 -dev packages both come from Ubuntu 22.04 (jammy),
+# so the result links against glibc 2.35 and loads on every suite this SDK packs.
+
+[binaries]
+c          = 'aarch64-linux-gnu-gcc'
+cpp        = 'aarch64-linux-gnu-g++'
+ar         = 'aarch64-linux-gnu-ar'
+strip      = 'aarch64-linux-gnu-strip'
+pkgconfig  = 'aarch64-linux-gnu-pkg-config'
+cmake      = 'cmake'
+
+[built-in options]
+c_args     = ['-O2', '-g0']
+cpp_args   = ['-O2', '-g0']
+
+[properties]
+needs_exe_wrapper = true
+
+[host_machine]
+system     = 'linux'
+cpu_family = 'aarch64'
+cpu        = 'aarch64'
+endian     = 'little'

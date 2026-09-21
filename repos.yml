@@ -40,6 +40,15 @@ repositories:
     url: https://git.ti.com/git/graphics/ti-img-rogue-umlibs.git
     version: linuxws/scarthgap/k6.12/25.2.6850647
 
+  # TI's patched Mesa. Supplies pvr_dri.so, which upstream/distro Mesa does not
+  # have -- without it the PowerVR DDK is unreachable and GLES falls back to
+  # llvmpipe. Keep SRCREV in sync with
+  # yocto/meta-ti/meta-ti-bsp/recipes-graphics/mesa/mesa-pvr_24.0.1.bb
+  src/mesa-pvr:
+    type: git
+    url: https://gitlab.freedesktop.org/StaticRocket/mesa.git
+    version: 68af6a102c2298569e77d1aa8bccc1ff61438b3e
+
   src/cc33xx-fw:
     type: git
     url: https://git.ti.com/git/cc33xx-wlan/cc33xx-fw.git
