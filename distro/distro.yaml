@@ -209,6 +209,13 @@ actions:
   - action: run
     chroot: false
     script: scripts/t3-gem-o1/install-firmware.sh {{ $workdir }} $ROOTDIR
+
+{{ if eq $ci "false" }}
+  - action: run
+    description: Install PowerVR GPU userspace (TI mesa-pvr) into /opt/ti-gpu
+    chroot: false
+    script: scripts/t3-gem-o1/install-graphics.sh {{ $workdir }} $ROOTDIR
+{{ end }}
 {{ end }}
 
 {{ if eq $type "kiosk" "desktop" "tablet" }}

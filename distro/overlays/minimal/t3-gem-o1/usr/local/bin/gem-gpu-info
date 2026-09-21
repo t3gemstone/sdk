@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# Walks the PowerVR render path bottom-up and reports where it breaks.
+# Each stage only makes sense if the one before it passed.
+
+set -uo pipefail
+
+TI_GPU_PREFIX=/opt/ti-gpu
+
+pass() { printf '  \033[32mOK\033[0m    %s\n' "$1"; }
+fail() { printf '  \033[31mFAIL\033[0m  %s\n' "$1"; }
+info() { printf '        %s\n' "$1"; }
+
+echo
+echo "1. Kernel driver"
+if lsmod | grep -q '^pvrsrvkm'; then
+    pass "pvrsrvkm loaded"
+    dmesg 2>/dev/null | grep -oE 'Read BVNC [0-9.]+' | tail -1 | sed 's/^/        /'
+else
+    fail "pvrsrvkm not loaded -- modprobe pvrsrvkm"
+fi
+
+echo
+echo "2. Device nodes"
+if [ -e /dev/dri/renderD128 ]; then
+    pass "/dev/dri/renderD128 present"
+    # Actually open it O_RDWR. A -r/-w test passes where the real open returns
+    # EACCES, which is how this failure hid: the DDK scans renderD128..191,
+    # finds nothing it can open, and Mesa quietly falls back to llvmpipe.
+    if (: <>/dev/dri/renderD128) 2>/dev/null; then
+        pass "opened read-write by $(id -un)"
+    else
+        fail "cannot open as $(id -un) -- 'render' group missing from: $(id -Gn)"
+    fi
+else
+    fail "/dev/dri/renderD128 missing"
+fi
+
+echo
+echo "3. Closed DDK userspace"
+if [ -f /usr/lib/libpvr_dri_support.so ]; then
+    pass "libpvr_dri_support.so present"
+else
+    fail "libpvr_dri_support.so missing (ti-img-rogue-umlibs not installed)"
+fi
+
+echo
+echo "4. GPU without Mesa (rgx_triangle_test)"
+# Supplementary only: this is TI's own DDK test and wants exclusive DRM access,
+# so it aborts for reasons that say nothing about the Mesa path. Step 6 is the
+# one that decides.
+if command -v rgx_triangle_test >/dev/null; then
+    if out=$(rgx_triangle_test 2>&1); then
+        pass "renders on the GPU"
+    else
+        info "inconclusive -- needs exclusive DRM access; see step 6"
+        echo "$out" | tail -3 | sed 's/^/        /'
+    fi
+else
+    info "rgx_triangle_test not installed -- skipped"
+fi
+
+echo
+echo "5. Mesa PowerVR driver"
+if [ -f "$TI_GPU_PREFIX/lib/dri/pvr_dri.so" ]; then
+    pass "$TI_GPU_PREFIX/lib/dri/pvr_dri.so present"
+else
+    fail "pvr_dri.so missing -- image built without GPU acceleration"
+fi
+
+echo
+echo "6. GL renderer"
+renderer=""
+if command -v kmscube >/dev/null; then
+    # kmscube prints the GL strings before it starts drawing. It takes over the
+    # display for a moment, and needs DRM master. Only the GL block has a
+    # 'renderer:' line, so no need to bracket the section.
+    #
+    # Preferred over es2_info: Ubuntu's mesa-utils ships the X11 build of
+    # es2_info, which opens an X display before it ever looks at EGL_PLATFORM
+    # and so reports nothing on an EGLFS/GBM system.
+    renderer=$(timeout 8 gem-gpu-run kmscube 2>&1 \
+               | grep -i '^ *renderer:' | tail -1 \
+               | cut -d: -f2- | tr -d '"' | sed 's/^ *//;s/ *$//')
+else
+    info "kmscube not installed (apt-get install kmscube) -- skipped"
+fi
+
+if [ -n "$renderer" ]; then
+    if echo "$renderer" | grep -qi llvmpipe; then
+        fail "$renderer  <- software rasterizer, GPU is NOT in use"
+    else
+        pass "$renderer"
+    fi
+elif command -v kmscube >/dev/null; then
+    fail "no GL renderer reported -- is Xorg holding DRM master?"
+fi
+
+echo

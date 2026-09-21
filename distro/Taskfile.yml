@@ -48,6 +48,11 @@ tasks:
         if [ "{{ .ENCRYPT }}" = "true" ]; then
           task utils:encrypt-image IMG_FILE_PATH={{ .IMG_FILE_PATH }}
         fi
+    preconditions:
+      # t3-gem-o1 images carry the PowerVR userspace; fail here rather than an
+      # hour into debos.
+      - sh: 'test "{{ .MACHINE }}" != "t3-gem-o1" || test -f {{ .WORKDIR }}/build/graphics/{{ .MACHINE }}/opt/ti-gpu/lib/dri/pvr_dri.so'
+        msg: "GPU userspace missing. Run <task graphics:build MACHINE={{ .MACHINE }}>"
     requires:
       vars:
         - name: MACHINE

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Runs a command against the PowerVR GPU instead of the software rasterizer.
+#
+# TI's Mesa lives in an isolated prefix (/opt/ti-gpu) so that the system Mesa and
+# the Xorg session keep working untouched. That prefix is not on the default
+# loader path, which is what this wrapper supplies.
+#
+#   gem-gpu-run kmscube
+#   gem-gpu-run env QT_QPA_PLATFORM=eglfs ./my-qt-app
+#
+# It renders through EGL + GBM/DRM, so it needs DRM master: stop Xorg first, or
+# run it on a VT that Xorg is not holding.
+
+set -euo pipefail
+
+TI_GPU_PREFIX=/opt/ti-gpu
+
+if [ ! -f "$TI_GPU_PREFIX/lib/dri/pvr_dri.so" ]; then
+    echo "gem-gpu-run: $TI_GPU_PREFIX/lib/dri/pvr_dri.so not found;" >&2
+    echo "             this image was built without GPU acceleration." >&2
+    exit 1
+fi
+
+if [ $# -eq 0 ]; then
+    echo "usage: gem-gpu-run <command> [args...]" >&2
+    exit 2
+fi
+
+exec env \
+    LD_LIBRARY_PATH="$TI_GPU_PREFIX/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    LIBGL_DRIVERS_PATH="$TI_GPU_PREFIX/lib/dri" \
+    "$@"

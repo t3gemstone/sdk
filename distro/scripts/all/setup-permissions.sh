@@ -6,6 +6,11 @@ DISTRO_TYPE="${1:-minimal}"
 
 chmod +x /usr/local/bin/gem-camera-setup
 
+# Shipped by the t3-gem-o1 overlay only
+if [[ -f /usr/local/bin/gem-gpu-run ]]; then
+    chmod +x /usr/local/bin/gem-gpu-run /usr/local/bin/gem-gpu-info
+fi
+
 if [[ "$DISTRO_TYPE" == "desktop" ]]; then
     chmod +x /usr/local/bin/set-system-keyboard-layout
     chmod +x /usr/local/bin/set-system-language
