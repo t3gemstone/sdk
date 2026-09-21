@@ -16,6 +16,6 @@ ln -sfn "vision_apps_eaik/vx_app_rtos_linux_c7x_2.out.signed" "j722s-c71_1-fw-se
 ln -sfn "vision_apps_eaik/vx_app_rtos_linux_mcu2_0.out" "j722s-main-r5f0_0-fw"
 ln -sfn "vision_apps_eaik/vx_app_rtos_linux_mcu2_0.out.signed" "j722s-main-r5f0_0-fw-sec"
 
-cp -ar "$WORKDIR/src/ti-img-rogue-umlibs/targetfs/j721s2_linux/lws-generic/release/etc/"* "$ROOTDIR/etc"
-cp -ar "$WORKDIR/src/ti-img-rogue-umlibs/targetfs/j721s2_linux/lws-generic/release/usr/"* "$ROOTDIR/usr"
-cp -ar "$WORKDIR/src/ti-img-rogue-umlibs/targetfs/j721s2_linux/lws-generic/release/lib/"* "$ROOTDIR/lib"
+cp -ar "$WORKDIR/src/ti-img-rogue-umlibs/targetfs/j722s_linux/lws-generic/release/etc/"* "$ROOTDIR/etc"
+cp -ar "$WORKDIR/src/ti-img-rogue-umlibs/targetfs/j722s_linux/lws-generic/release/usr/"* "$ROOTDIR/usr"
+cp -ar "$WORKDIR/src/ti-img-rogue-umlibs/targetfs/j722s_linux/lws-generic/release/lib/"* "$ROOTDIR/lib"
