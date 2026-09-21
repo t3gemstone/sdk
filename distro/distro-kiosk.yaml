@@ -15,7 +15,11 @@ actions:
       - libxcb-cursor0
       - openbox
       - python3-pyqt5
-      - python3-pyqtgraph
+      - python3-pyqt5.qtquick
+      - qml-module-qtquick-layouts
+      - qml-module-qtquick-shapes
+      - qml-module-qtquick-window2
+      - qml-module-qtquick2
       - whiptail
       - x11-xserver-utils
       - xinit

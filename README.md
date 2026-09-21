@@ -84,6 +84,29 @@ gemstone@t3-gem-o1:$ gem-gpu-run env QT_QPA_PLATFORM=eglfs ./app   # a Qt applic
 
 Rendering goes through EGL + GBM/DRM, so it needs DRM master: stop Xorg first, or use a VT that Xorg is not holding. GLX (`glxinfo`, indirect X11 rendering) stays on the system Mesa by design — TI's Mesa is built without GLX.
 
+### Kiosk session backend
+
+Because there is no GLX, an Xorg kiosk session renders on the CPU whatever else is installed. The kiosk image instead runs the application straight on DRM/KMS with no display server, selected by `KIOSK_BACKEND` in `/etc/gemstone/kiosk.conf`:
+
+| | `x11` | `eglfs` (default on t3-gem-o1) |
+|---|---|---|
+| Session | Xorg + openbox | none, the app owns the panel |
+| Toolkits | any | Qt only |
+| Qt Quick / QML | software | **GPU** |
+| native EGL/GL | software | **GPU** |
+| QtWidgets | works | **black screen** — driver bug, see below |
+
+The example kiosk application (`~/bin/kiosk`) is Qt Quick for this reason. Measured on a T3 Gemstone O1, same application on the 1024x600 DSI panel, 4x Cortex-A53 @1.4 GHz:
+
+| | App CPU | Xorg CPU | App RSS |
+|---|---|---|---|
+| `x11` — llvmpipe | 82% | 3.0% | 130 MB |
+| `eglfs` — PowerVR | **7%** | — | 62 MB |
+
+The toolkit is the same in both rows, so that difference is the GPU. For reference the previous QtWidgets version of the example cost 74% under `x11`; moving to Qt Quick is what makes the GPU reachable, not what makes it cheap.
+
+**The QtWidgets caveat:** under `eglfs` a QtWidgets window stays black. Qt reports no error — it selects the mode correctly and keeps flipping buffers — but the texture it uploads from the widget backingstore never reaches the screen. The same application renders correctly under llvmpipe, so the fault is in the PowerVR userspace, not in Qt's configuration. Set `KIOSK_BACKEND=x11` for a QtWidgets application, or for anything that is not Qt.
+
 # Configuration of Kernel and U-Boot
 
 ```bash

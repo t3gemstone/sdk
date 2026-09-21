@@ -12,19 +12,5 @@ xrandr --query | grep " connected" | awk '{print $1}' | while read -r display; d
     xrandr --output "$display" --mode "$KIOSK_RESOLUTION" --rate "$KIOSK_REFRESH_RATE"
 done
 
-# Remove log file if it exceeds the maximum size
-readonly ACTUAL_LOG_SIZE=$(wc -c <"$KIOSK_LOG_PATH")
-if [ "$ACTUAL_LOG_SIZE" -ge "$KIOSK_LOG_MAX_SIZE_BYTES" ]; then
-    echo "$KIOSK_LOG_PATH log size exceeded $KIOSK_LOG_MAX_SIZE_BYTES bytes, removing the file" \
-    | logger --tag "kiosk" --priority user.warning
-    rm -r "$KIOSK_LOG_PATH"
-fi
-
-# Restart app if terminated
-while true; do
-    echo "starting $KIOSK_BIN"  | logger --tag "kiosk" --priority user.info
-    # Log program output to file with timestamps
-    "$KIOSK_BIN" 2>&1 | while read line; do echo "$(date '+%Y-%m-%d %H:%M:%S'): $line"; done | tee -a "$KIOSK_LOG_PATH"
-    echo "$KIOSK_BIN terminated"  | logger --tag "kiosk" --priority user.warning
-    sleep 1
-done
+# The application loop and log handling are shared with the eglfs backend
+exec kiosk-session

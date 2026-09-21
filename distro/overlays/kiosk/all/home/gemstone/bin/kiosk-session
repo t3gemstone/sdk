@@ -1,0 +1,45 @@
+#!/bin/bash
+# vim: set ft=bash:
+# -*- mode: bash -*-
+#
+# Runs the kiosk application and restarts it if it exits.
+#
+# Shared by both session backends: under x11 the openbox autostart calls it once
+# the display server is up, under eglfs ~/.profile calls it directly and there is
+# no display server at all.
+
+[ -f "$HOME/kiosk.environment" ] && source "$HOME/kiosk.environment"
+
+if [ "${KIOSK_BACKEND:-x11}" = "eglfs" ]; then
+    # No display server: Qt drives DRM/KMS through GBM itself. It needs to be
+    # DRM master, so nothing else may be holding the display.
+    export QT_QPA_PLATFORM=eglfs
+    # tidss has no cursor plane; without this Qt logs a failure every frame.
+    export QT_QPA_EGLFS_HIDECURSOR=1
+
+    # Route the application through the PowerVR stack on images that ship it.
+    # Re-exec once, guarded, so the wrapper cannot recurse.
+    if [ -z "${KIOSK_GPU_WRAPPED:-}" ] && command -v gem-gpu-run >/dev/null; then
+        export KIOSK_GPU_WRAPPED=1
+        exec gem-gpu-run "$(readlink -f "$0")"
+    fi
+fi
+
+# Remove log file if it exceeds the maximum size
+if [ -f "$KIOSK_LOG_PATH" ]; then
+    readonly ACTUAL_LOG_SIZE=$(wc -c <"$KIOSK_LOG_PATH")
+    if [ "$ACTUAL_LOG_SIZE" -ge "$KIOSK_LOG_MAX_SIZE_BYTES" ]; then
+        echo "$KIOSK_LOG_PATH log size exceeded $KIOSK_LOG_MAX_SIZE_BYTES bytes, removing the file" \
+        | logger --tag "kiosk" --priority user.warning
+        rm -f "$KIOSK_LOG_PATH"
+    fi
+fi
+
+# Restart app if terminated
+while true; do
+    echo "starting $KIOSK_BIN" | logger --tag "kiosk" --priority user.info
+    # Log program output to file with timestamps
+    "$KIOSK_BIN" 2>&1 | while read line; do echo "$(date '+%Y-%m-%d %H:%M:%S'): $line"; done | tee -a "$KIOSK_LOG_PATH"
+    echo "$KIOSK_BIN terminated" | logger --tag "kiosk" --priority user.warning
+    sleep 1
+done

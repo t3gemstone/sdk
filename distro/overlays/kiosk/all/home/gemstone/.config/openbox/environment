@@ -1,9 +1,20 @@
 # vim: set ft=bash:
 # -*- mode: bash -*-
 
+# Reachable as ~/kiosk.environment too (symlink), which is what ~/.profile and
+# bin/kiosk-session source. Machine defaults land in /etc/gemstone/kiosk.conf.
+[ -f /etc/gemstone/kiosk.conf ] && source /etc/gemstone/kiosk.conf
+
 export PATH="$HOME/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/local/qt6:$LD_LIBRARY_PATH"
 
+# Session backend.
+#   x11   - Xorg + openbox, any toolkit, software rendering only
+#   eglfs - the Qt application straight on DRM/KMS, no display server. Qt only,
+#           but the only one of the two that reaches the GPU on PowerVR boards.
+export KIOSK_BACKEND="${KIOSK_BACKEND:-x11}"
+
+# x11 backend only. eglfs uses the panel's native mode.
 export KIOSK_RESOLUTION=800x600
 export KIOSK_REFRESH_RATE=60
 

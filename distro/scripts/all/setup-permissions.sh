@@ -21,6 +21,8 @@ if [[ "$DISTRO_TYPE" == "kiosk" ]]; then
     if [[ -f /usr/local/bin/kiosk ]]; then
         chmod +x /usr/local/bin/kiosk
     fi
+
+    chmod +x /home/gemstone/bin/kiosk /home/gemstone/bin/kiosk-session
 fi
 
 chown -R gemstone:gemstone /home/gemstone
