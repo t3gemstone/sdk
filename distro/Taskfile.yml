@@ -60,7 +60,7 @@ tasks:
         - name: DISTRO_BASE
           enum: [ ubuntu, debian, pardus ]
         - name: DISTRO_TYPE
-          enum: [ minimal, kiosk, desktop, tablet ]
+          enum: [ minimal, kiosk, desktop, wayland-desktop, tablet ]
         - name: DISTRO_ARCH
           enum: [ arm64, amd64 ]
         - name: DISTRO_SUITE
@@ -118,3 +118,19 @@ tasks:
           matrix:
             DISTRO: [ "ubuntu", "debian", "pardus" ]
         cmd: 'task distro:build:all:{{.ITEM.DISTRO}} MACHINE=t3-gem-o1'
+
+  build:wayland:t3-gem-o1:
+    desc: Build the PowerVR accelerated KDE Plasma Wayland image for t3-gem-o1
+    cmds:
+      - task: build
+        vars:
+          MACHINE: t3-gem-o1
+          DISTRO_BASE: ubuntu
+          DISTRO_TYPE: wayland-desktop
+          DISTRO_SUITE: jammy
+          IMG_SIZE: '{{ .IMG_SIZE | default "16G" }}'
+
+  verify:wayland:
+    desc: Validate the T3 Plasma Wayland image integration without building an image
+    cmds:
+      - '{{ .WORKDIR }}/distro/scripts/wayland-desktop/verify-integration.sh {{ .WORKDIR }}'

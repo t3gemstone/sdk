@@ -117,6 +117,17 @@ actions:
       phase: packages
 {{ end }}
 
+{{ if eq $type "wayland-desktop" }}
+  - action: recipe
+    description: Install KDE Plasma Wayland packages
+    recipe: distro-wayland-desktop.yaml
+    variables:
+      arch: {{ $arch }}
+      suite: {{ $suite }}
+      machine: {{ $machine }}
+      phase: packages
+{{ end }}
+
 {{ if eq $type "tablet" }}
   - action: recipe
     description: Install tablet packages
@@ -154,6 +165,16 @@ actions:
     variables:
       arch: {{ $arch }}
       type: {{ $type }}
+      phase: skel
+{{ end }}
+
+{{ if eq $type "wayland-desktop" }}
+  - action: recipe
+    description: Seed Plasma defaults before adduser
+    recipe: distro-wayland-desktop.yaml
+    variables:
+      arch: {{ $arch }}
+      machine: {{ $machine }}
       phase: skel
 {{ end }}
 
@@ -218,7 +239,7 @@ actions:
 {{ end }}
 {{ end }}
 
-{{ if eq $type "kiosk" "desktop" "tablet" }}
+{{ if eq $type "kiosk" "desktop" "wayland-desktop" "tablet" }}
   - action: overlay
     source: overlays/{{ $type }}/all
     destination: /
@@ -226,6 +247,16 @@ actions:
   - action: overlay
     source: overlays/{{ $type }}/{{ $machine }}
     destination: /
+{{ end }}
+
+{{ if eq $type "wayland-desktop" }}
+  - action: recipe
+    description: Finalize the Plasma Wayland image
+    recipe: distro-wayland-desktop.yaml
+    variables:
+      arch: {{ $arch }}
+      machine: {{ $machine }}
+      phase: postinstall
 {{ end }}
 
 {{ if and (eq $type "tablet") (eq $selinux "true") }}

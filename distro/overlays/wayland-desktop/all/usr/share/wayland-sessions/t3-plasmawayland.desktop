@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=T3 Plasma (Wayland + PowerVR)
+Comment=T3 Gemstone Plasma Wayland session
+Exec=/usr/local/bin/start-t3-plasma-wayland
+TryExec=/usr/local/bin/start-t3-plasma-wayland
+Type=Application
+DesktopNames=KDE
+X-KDE-PluginInfo-Version=5.24

@@ -17,6 +17,10 @@ if [[ "$DISTRO_TYPE" == "desktop" ]]; then
     chmod +x /usr/local/bin/xfce4-popup-applicationsmenu
 fi
 
+if [[ "$DISTRO_TYPE" == "wayland-desktop" ]]; then
+    chmod 0755 /usr/local/bin/start-t3-plasma-wayland
+fi
+
 if [[ "$DISTRO_TYPE" == "kiosk" ]]; then
     if [[ -f /usr/local/bin/kiosk ]]; then
         chmod +x /usr/local/bin/kiosk

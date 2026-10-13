@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+
+if [ ! -r /usr/lib/t3-gemstone/powervr-env.sh ]; then
+    echo "T3 PowerVR environment is missing" >&2
+    exit 1
+fi
+
+. /usr/lib/t3-gemstone/powervr-env.sh
+
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=KDE
+export KDE_FULL_SESSION=true
+export KDE_SESSION_VERSION=5
+export KWIN_COMPOSE=O2ES
+
+exec /usr/bin/startplasma-wayland

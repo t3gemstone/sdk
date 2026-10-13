@@ -1,0 +1,52 @@
+{{/* T3 Foundation Gemstone Project https://t3gemstone.org */}}
+{{/* SPDX-License-Identifier Apache-2.0 */}}
+
+{{- $arch    := or .arch    "arm64" -}}
+{{- $suite   := or .suite   "jammy" -}}
+{{- $machine := or .machine "t3-gem-o1" -}}
+{{- $phase   := or .phase   "packages" -}}
+
+architecture: {{ $arch }}
+
+actions:
+
+{{ if eq $phase "packages" }}
+  - action: apt
+    recommends: false
+    packages:
+      - bluedevil
+      - breeze
+      - breeze-cursor-theme
+      - dolphin
+      - kde-config-sddm
+      - konsole
+      - kwin-wayland
+      - network-manager
+      - plasma-desktop
+      - plasma-nm
+      - plasma-workspace
+      - plasma-workspace-wayland
+      - pipewire
+      - qtwayland5
+      - sddm
+      - sddm-theme-breeze
+      - systemsettings
+      - wayland-utils
+      - wireplumber
+      - xdg-desktop-portal
+      - xdg-desktop-portal-kde
+      - xwayland
+{{ end }}
+
+{{ if eq $phase "skel" }}
+  - action: overlay
+    source: overlays/wayland-desktop/all/etc/skel
+    destination: /etc/skel
+{{ end }}
+
+{{ if eq $phase "postinstall" }}
+  - action: run
+    description: Enable SDDM and select the T3 Plasma Wayland session
+    chroot: true
+    script: scripts/wayland-desktop/setup-session.sh {{ $machine }}
+{{ end }}

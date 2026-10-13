@@ -1,0 +1,7 @@
+[Compositing]
+Backend=OpenGL
+GLCore=false
+OpenGLIsUnsafe=false
+
+[Wayland]
+InputMethod=
