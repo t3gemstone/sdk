@@ -109,33 +109,41 @@ check_requirements() {
     start_task requirements
     for i in "curl" "git" "sudo"; do
         if ! has "$i"; then
-            echo "$i must be installed to start the setup! For Help: $DOCS_URL/sdk"
-            fail_task
+            fail_task requirements
+            error "$i must be installed to start the setup! For Help: $DOCS_URL/sdk"
             return 1
         fi
     done
-    success
     end_task requirements
 }
 
 install_docker() {
     start_task docker
-    has docker && success || { curl -fsSL https://get.docker.com | sh && success || fail_task; }
-    end_task docker
+    if has docker || curl -fsSL https://get.docker.com | sh; then
+        end_task docker
+    else
+        fail_task docker
+        error "Docker could not be installed. For Help: $DOCS_URL/sdk"
+        return 1
+    fi
 }
 
 set_docker_perms() {
     start_task docker-permissions
 
     if ! has docker; then
-        error "Docker is not found, permissions could not set."
-        fail_task
-    elif id -nG "$USER" | grep -qwv "docker"; then
+        fail_task docker-permissions
+        error "Docker is not found, permissions could not be set."
+        return 1
+    fi
+
+    if id -nG "$USER" | grep -qwv "docker"; then
+        end_task docker-permissions
         info "sudo groupadd docker && sudo usermod -aG docker $USER"
         sudo groupadd docker || true
-        sudo usermod -aG docker $USER || true
+        sudo usermod -aG docker "$USER" || true
         warn "You should log out and log back in so that your docker group membership is re-evaluated."
-        success
+        return 0
     fi
 
     end_task docker-permissions
@@ -143,8 +151,13 @@ set_docker_perms() {
 
 install_devbox() {
     start_task devbox
-    has "devbox" && success || { curl -fsSL https://get.jetify.com/devbox | bash && success || fail_task; }
-    end_task devbox
+    if has devbox || curl -fsSL https://get.jetify.com/devbox | bash; then
+        end_task devbox
+    else
+        fail_task devbox
+        error "Devbox could not be installed. For Help: $DOCS_URL/sdk"
+        return 1
+    fi
 }
 
 intro_msg() {
