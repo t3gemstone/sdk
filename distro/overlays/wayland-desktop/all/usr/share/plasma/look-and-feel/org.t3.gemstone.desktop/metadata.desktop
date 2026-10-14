@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=T3 Gemstone
+Comment=Branded T3 Gemstone desktop appearance
+Type=Service
+X-KDE-ServiceTypes=Plasma/LookAndFeel
+X-KDE-PluginInfo-Author=T3 Foundation
+X-KDE-PluginInfo-Name=org.t3.gemstone.desktop
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-License=Apache-2.0
+X-KDE-PluginInfo-Category=Look and Feel
+
+[X-Plasma-Defaults]
+FallbackTheme=breeze-dark

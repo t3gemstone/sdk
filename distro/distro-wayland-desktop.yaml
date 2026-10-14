@@ -31,7 +31,6 @@ actions:
       - sddm
       - sddm-theme-breeze
       - systemsettings
-      - wayland-utils
       - wireplumber
       - xdg-desktop-portal
       - xdg-desktop-portal-kde

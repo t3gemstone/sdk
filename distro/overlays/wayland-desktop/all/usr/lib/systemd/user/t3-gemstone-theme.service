@@ -1,0 +1,12 @@
+[Unit]
+Description=Apply T3 Gemstone Plasma theme
+After=plasma-plasmashell.service
+PartOf=plasma-workspace.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/lib/t3-gemstone-theme/apply-theme.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=plasma-workspace.target

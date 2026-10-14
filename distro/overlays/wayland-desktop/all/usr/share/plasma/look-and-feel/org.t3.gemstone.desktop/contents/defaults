@@ -1,0 +1,8 @@
+[kdeglobals][General]
+ColorScheme=T3Gemstone
+
+[kdeglobals][KDE]
+widgetStyle=Breeze
+
+[plasmarc][Theme]
+name=T3Gemstone

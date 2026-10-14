@@ -1,0 +1,22 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "T3 Foundation"
+            }
+        ],
+        "Category": "System Information",
+        "Description": "Shows AM67A CPU load, memory use and SoC temperature",
+        "EnabledByDefault": true,
+        "Icon": "utilities-system-monitor",
+        "Id": "org.t3.gemstone.systemstatus",
+        "License": "Apache-2.0",
+        "Name": "T3 Gemstone Sistem Durumu",
+        "ServiceTypes": [
+            "Plasma/Applet"
+        ],
+        "Version": "1.0"
+    },
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml"
+}

@@ -4,7 +4,7 @@ set -Eeuo pipefail
 WORKDIR="${WORKDIR:-/home/workdir}"
 MACHINE="${MACHINE:-t3-gem-o1}"
 JOBS="${JOBS:-8}"
-IMAGE_SIZE="${IMAGE_SIZE:-16G}"
+IMAGE_SIZE="${IMAGE_SIZE:-14G}"
 
 cd "$WORKDIR"
 

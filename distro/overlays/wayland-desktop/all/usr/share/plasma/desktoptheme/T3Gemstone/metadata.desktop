@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=T3 Gemstone
+Comment=Performance-friendly T3 Gemstone Plasma theme
+Type=Service
+X-KDE-PluginInfo-Author=T3 Foundation
+X-KDE-PluginInfo-Name=T3Gemstone
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Category=Plasma Theme
+X-KDE-PluginInfo-License=Apache-2.0
+X-Plasma-API=5.0
+
+[Settings]
+FallbackTheme=breeze-dark

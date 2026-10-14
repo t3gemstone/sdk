@@ -21,14 +21,32 @@ tasks:
     cmds:
       - task: permissions
       - task: yocto:local-apt-server
-      - sudo mkdir -p /run/debos
-      - cd /run/debos &&
+      # WSL mounts /run as nodev. debootstrap must be able to create device
+      # nodes in its target, so keep all debos working directories on the
+      # native ext4 workspace instead of /run.
+      - |
+        if command -v update-binfmts >/dev/null 2>&1 && [ -e /proc/sys/fs/binfmt_misc/register ]; then
+          sudo update-binfmts --enable qemu-aarch64
+        fi
+        # debos' chroot backend bind-mounts /dev/disk. WSL does not create
+        # that conventional directory when no block device is exposed.
+        if grep -qi microsoft /proc/sys/kernel/osrelease; then
+          sudo mkdir -p /dev/disk
+          # WSL does not start udev because PID 1 is not systemd. debos waits
+          # for udev after partitioning and otherwise stalls for minutes.
+          if [ ! -S /run/udev/control ]; then
+            sudo /lib/systemd/systemd-udevd --daemon
+          fi
+        fi
+      - sudo rm -rf {{ .IMG_DEPLOY_DIR }}/root
+      - sudo mkdir -p {{ .IMG_DEPLOY_DIR }}/work {{ .IMG_DEPLOY_DIR }}/root {{ .IMG_DEPLOY_DIR }}/scratch
+      - cd {{ .IMG_DEPLOY_DIR }}/work &&
           sudo debos
             --disable-fakemachine
             --debug-shell
             --artifactdir={{ .IMG_DEPLOY_DIR }}
-            --scratchdir={{ .IMG_DEPLOY_DIR }}
-            --rootdir=/run/debos
+            --scratchdir={{ .IMG_DEPLOY_DIR }}/scratch
+            --rootdir={{ .IMG_DEPLOY_DIR }}/root
             --template-var="workdir:{{ .WORKDIR }}"
             --template-var="machine:{{ .MACHINE }}"
             --template-var="base:{{ .DISTRO_BASE }}"
@@ -122,13 +140,15 @@ tasks:
   build:wayland:t3-gem-o1:
     desc: Build the PowerVR accelerated KDE Plasma Wayland image for t3-gem-o1
     cmds:
-      - task: build
-        vars:
-          MACHINE: t3-gem-o1
-          DISTRO_BASE: ubuntu
-          DISTRO_TYPE: wayland-desktop
-          DISTRO_SUITE: jammy
-          IMG_SIZE: '{{ .IMG_SIZE | default "16G" }}'
+      # Invoke the included task through the CLI so the image-name variables
+      # are evaluated with wayland-desktop rather than the top-level minimal
+      # defaults.
+      - task distro:build
+          MACHINE=t3-gem-o1
+          DISTRO_BASE=ubuntu
+          DISTRO_TYPE=wayland-desktop
+          DISTRO_SUITE=jammy
+          IMG_SIZE='{{ .IMG_SIZE | default "14G" }}'
 
   verify:wayland:
     desc: Validate the T3 Plasma Wayland image integration without building an image
