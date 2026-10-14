@@ -45,7 +45,7 @@ root_files=(
     usr/lib/t3-gemstone/powervr-session.env
     etc/sddm.conf.d/20-t3-wayland.conf
     etc/skel/.config/plasma-org.kde.plasma.desktop-appletsrc
-    usr/share/wallpapers/T3GemstoneLaunchEclipse/contents/images/1920x1080.png
+    usr/share/wallpapers/T3GemstoneCollection01/contents/images/1920x1080.png
     usr/share/icons/hicolor/256x256/apps/t3-gemstone.png
     usr/share/plasma/plasmoids/org.t3.gemstone.systemstatus/metadata.json
     usr/lib/systemd/user/t3-gemstone-theme.service
@@ -73,13 +73,13 @@ grep -q '^Session=t3-plasmawayland\.desktop$' "$MOUNT_ROOT/root/etc/sddm.conf.d/
     fail "SDDM does not select the T3 Wayland session"
 grep -q 'XDG_SESSION_TYPE=wayland' "$MOUNT_ROOT/root/usr/local/bin/start-t3-plasma-wayland" || \
     fail "Wayland session environment is missing"
-grep -q 'T3GemstoneLaunchEclipse' \
+grep -q 'T3GemstoneCollection01' \
     "$MOUNT_ROOT/root/etc/skel/.config/plasma-org.kde.plasma.desktop-appletsrc" || \
-    fail "T3 Launch Eclipse is not the default wallpaper"
-wallpaper_count="$(find "$MOUNT_ROOT/root/usr/share/wallpapers" \
-    -type f -path '*/contents/images/1920x1080.png' | wc -l)"
-[[ "$wallpaper_count" -ge 16 ]] || \
-    fail "expected at least 16 T3 wallpapers, found $wallpaper_count"
+    fail "T3 Gemstone Collection 01 is not the default wallpaper"
+wallpaper_count="$(find "$MOUNT_ROOT/root/usr/share/wallpapers" -type f \
+    \( -name '1920x1080.png' -o -name '1920x1080.jpg' \) | wc -l)"
+[[ "$wallpaper_count" -ge 25 ]] || \
+    fail "expected at least 25 T3 wallpapers, found $wallpaper_count"
 
 required_packages=(
     kwin-wayland

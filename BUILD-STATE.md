@@ -19,8 +19,8 @@ without an error.
 - PowerVR `pvr_dri.so`, DRI support library and `pvrsrvkm` kernel module
 - KDE Plasma Wayland, KWin Wayland, SDDM, PipeWire and portals
 - Automatic `t3-plasmawayland.desktop` session selection
-- T3 Gemstone theme, launcher icon, system-status widget and 17 wallpapers
-- T3 Gemstone Launch Eclipse as the default wallpaper
+- T3 Gemstone theme, launcher icon, system-status widget and 25 wallpapers
+- T3 Gemstone Collection 01 (`1.png`) as the default wallpaper
 
 The authoritative verification report is written to
 `build/debos/verification-report.txt`.

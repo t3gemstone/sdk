@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-WALLPAPER=/usr/share/wallpapers/T3GemstoneLaunchEclipse/contents/images/1920x1080.png
+WALLPAPER=/usr/share/wallpapers/T3GemstoneCollection01/contents/images/1920x1080.png
 STATE_DIR="${HOME}/.local/share/t3-gemstone-theme"
 DEFAULT_APPLETSRC=/usr/share/t3-gemstone-theme/default-plasma-org.kde.plasma.desktop-appletsrc
 
