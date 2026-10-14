@@ -13,9 +13,10 @@ G_MULTI_DIR="/sys/kernel/config/usb_gadget/g_multi"
 
 USB_VID="0x1d6b"
 USB_PID="0x0104"
-# Bumped from 0x0404 when the composite interface layout changed, so that hosts
-# re-evaluate the device instead of reusing cached per-interface driver bindings.
-USB_BCDDEVICE="0x0405"
+# Bumped when the composite interface layout changed (RNDIS -> CDC-NCM), so
+# that hosts re-evaluate the device instead of reusing cached per-interface
+# driver bindings.
+USB_BCDDEVICE="0x0406"
 USB_BCDUSB="0x0200"
 
 ETH_HOST_MAC_ADDR="02:12:34:56:78:9A"
@@ -29,29 +30,11 @@ function enable_usb_serial()
 
 function enable_usb_ethernet()
 {
-    mkdir -p functions/rndis.usb0
-    echo "$ETH_HOST_MAC_ADDR" > functions/rndis.usb0/host_addr
-    echo "$ETH_DEV_MAC_ADDR" > functions/rndis.usb0/dev_addr
+    mkdir -p functions/ncm.usb0
+    echo "$ETH_HOST_MAC_ADDR" > functions/ncm.usb0/host_addr
+    echo "$ETH_DEV_MAC_ADDR" > functions/ncm.usb0/dev_addr
 
-    echo EF > functions/rndis.usb0/class
-    echo 04 > functions/rndis.usb0/subclass
-    echo 01 > functions/rndis.usb0/protocol
-
-    echo 1 > os_desc/use
-    echo 0xCD > os_desc/b_vendor_code
-    echo MSFT100 > os_desc/qw_sign
-    echo "RNDIS" > functions/rndis.usb0/os_desc/interface.rndis/compatible_id
-    echo "5162001" > functions/rndis.usb0/os_desc/interface.rndis/sub_compatible_id
-
-    mkdir -p configs/c.1
-    ln -s configs/c.1 os_desc
-    mkdir -p functions/rndis.usb0/os_desc/interface.rndis/Icons
-    echo 2 > functions/rndis.usb0/os_desc/interface.rndis/Icons/type
-    echo "%SystemRoot%\\system32\\shell32.dll,-233" > functions/rndis.usb0/os_desc/interface.rndis/Icons/data
-    mkdir -p functions/rndis.usb0/os_desc/interface.rndis/Label
-    echo 1 > functions/rndis.usb0/os_desc/interface.rndis/Label/type
-    echo "Gemstone USB Ethernet" > functions/rndis.usb0/os_desc/interface.rndis/Label/data
-    ln -s functions/rndis.usb0 configs/c.1/
+    ln -s functions/ncm.usb0 configs/c.1/
 }
 
 function enable_mass_storage()
@@ -139,10 +122,9 @@ function run()
 
     echo 500 > configs/c.1/MaxPower
 
-    # RNDIS must be linked first: the Windows RNDIS class driver expects the
-    # RNDIS control interface to be interface 0 and fails with Code 10
-    # otherwise. Matches the function order of the reference bb-usb-gadgets
-    # script this file is based on.
+    # NCM is a standards-based CDC function, so unlike RNDIS it does not
+    # require the network control interface to be interface 0. Ordering here
+    # only affects interface numbering, not host driver binding.
     enable_usb_ethernet
     enable_usb_serial
     enable_mass_storage
