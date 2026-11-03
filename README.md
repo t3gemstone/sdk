@@ -1,9 +1,7 @@
 <p align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset=".meta/logo-dark.png" width="40%" />
-        <source media="(prefers-color-scheme: light)" srcset=".meta/logo-light.png" width="40%" />
-        <img alt="T3 Foundation" src=".meta/logo-light.png" width="40%" />
-    </picture>
+      <img width="400" height="100" alt="t3-foundation-gemstone-project-logo" src="https://github.com/user-attachments/assets/e5c26c55-7dcc-4236-b202-f17a4f6d6de7" />
+
 </p>
 
 # T3 Gemstone SDK
