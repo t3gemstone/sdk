@@ -20,6 +20,7 @@
 {{- $encrypt   := or .encrypt   "false" -}}
 {{- $mobian    := or .mobian    "false" -}}
 {{- $selinux   := or .selinux   "false" -}}
+{{- $bootfiles := or .bootfiles "" -}}
 
 architecture: {{ $arch }}
 
@@ -216,6 +217,12 @@ actions:
   - action: run
     chroot: false
     script: scripts/t3-gem-o1/install-firmware.sh {{ $workdir }} $ROOTDIR
+{{ end }}
+
+{{ if and (eq $machine "t3-gem-o1") $bootfiles }}
+  - action: run
+    chroot: false
+    script: scripts/t3-gem-o1/override-bootfiles.sh {{ $bootfiles }} $ROOTDIR
 {{ end }}
 
 {{ if eq $type "kiosk" "desktop" "tablet" }}
