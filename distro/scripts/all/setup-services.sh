@@ -5,6 +5,11 @@ if [ -f /usr/local/bin/gem-first-boot ]; then
     systemctl enable gem-first-boot
 fi
 
+if [ -f /usr/local/bin/gem-grow-rootfs ]; then
+    chmod +x /usr/local/bin/gem-grow-rootfs
+    systemctl enable gem-grow-rootfs
+fi
+
 if [ -f /usr/local/bin/gem-init ]; then
     chmod +x /usr/local/bin/gem-init
     systemctl enable gem-init
