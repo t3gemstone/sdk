@@ -11,20 +11,43 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
-list=(
-    "sys-kernel-debug.mount"
-    "sys-kernel-tracing.mount"
-    "apt-daily.service"
+# Images are only as large as their content: grow the root partition, the
+# last one on the disk, and its filesystem to fill the eMMC or SD card
+source=$(findmnt -n -o SOURCE /)
+source=${source%%[*}    # btrfs reports /dev/xxx[/subvolume]
+fstype=$(findmnt -n -o FSTYPE /)
+sysfs=/sys/class/block/$(basename "$source")
+
+if [ -f "$sysfs/partition" ]; then
+    partnum=$(cat "$sysfs/partition")
+    disk=/dev/$(basename "$(readlink -f "$sysfs/..")")
+
+    # ", +" makes the partition as large as the free space after it
+    if echo ", +" | sfdisk --no-reread --no-tell-kernel -N "$partnum" "$disk"; then
+        partx -u -n "$partnum" "$disk"
+        case "$fstype" in
+            btrfs) btrfs filesystem resize max / ;;
+            ext4)  resize2fs "$source" ;;
+        esac
+    fi
+fi
+
+timers=(
     "apt-daily.timer"
-    "apt-daily-upgrade.service"
     "apt-daily-upgrade.timer"
     "dpkg-db-backup.timer"
 )
 
-for i in "${list[@]}"; do
-    systemctl stop "$i"
-    systemctl disable "$i"
-done
+units=(
+    "apt-daily.service"
+    "apt-daily-upgrade.service"
+    "sys-kernel-debug.mount"
+    "sys-kernel-tracing.mount"
+)
+
+# One call for all units, so systemd reloads only once
+systemctl disable --now "${timers[@]}"
+systemctl stop "${units[@]}"
 
 configfile="/boot/config.ini"
 
@@ -66,6 +89,28 @@ method=auto
 method=auto
 EOF
             chmod 0600 "$wifi_conf_file"
+
+            # iwd only joins networks it has a profile for. The profile is
+            # named after the SSID, or "=" and its hex digits when the SSID has
+            # characters other than letters, digits, " ", "-" and "_".
+            iwd_name=$wifiname
+            if ! LC_ALL=C grep -qxE '[A-Za-z0-9 _-]+' <<< "$wifiname"; then
+                iwd_name="=$(printf %s "$wifiname" | od -An -tx1 | tr -d ' \n')"
+            fi
+
+            # 64 hex digits are the key itself, anything else a passphrase
+            if LC_ALL=C grep -qxE '[0-9a-fA-F]{64}' <<< "$wifipasswd"; then
+                iwd_key="PreSharedKey=$wifipasswd"
+            else
+                iwd_key="Passphrase=$(printf %s "$wifipasswd" | sed 's/\\/\\\\/g; s/^ /\\s/')"
+            fi
+
+            mkdir -p -m 0700 /var/lib/iwd
+            cat << EOF > "/var/lib/iwd/$iwd_name.psk"
+[Security]
+$iwd_key
+EOF
+            chmod 0600 "/var/lib/iwd/$iwd_name.psk"
         fi
 
         if [ -n "$wificountry" ]; then
@@ -99,7 +144,8 @@ EOF
     sed -i '/userpasswd=/d' $configfile
     sed -i '/wifiname=/d' $configfile
     sed -i '/wifipasswd=/d' $configfile
-    sed -i '/vncpasswd=/d' $configfile
+    sed -i '/vncpassword=/d' $configfile
+    sed -i '/diskpasswd=/d' $configfile
 fi
 
 systemctl disable gem-first-boot.service

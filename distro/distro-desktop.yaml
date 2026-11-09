@@ -22,6 +22,7 @@ actions:
   - action: apt
     recommends: true
     packages:
+      - accountsservice
       - atril
       - catfish
       - libxfce4ui-utils
@@ -29,6 +30,7 @@ actions:
       - lightdm-gtk-greeter
       - mousepad
       - network-manager
+      - onboard
       - parole
       - ristretto
       - thunar

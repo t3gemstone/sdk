@@ -88,7 +88,7 @@ jobs:
       - name: Run debos
         env:
           IMG_FILE_NAME: gemstone-${{ matrix.type }}-${{ env.RELEASE }}-${{ matrix.base }}-${{ matrix.suite }}-${{ matrix.machine }}.img
-          IMG_SIZE: ${{ matrix.type == 'minimal' && '1024M' || matrix.type == 'kiosk' && '4096M' || '16384M' }}
+          IMG_SIZE: ${{ matrix.type == 'minimal' && '1024M' || matrix.type == 'kiosk' && '4096M' || '5120M' }}
         run: |
           docker run --rm \
             --privileged \
