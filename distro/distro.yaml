@@ -90,6 +90,13 @@ actions:
       echo 'DPkg::Pre-Invoke  { "export LD_PRELOAD=/usr/lib/libeatmydata/libeatmydata.so"; };' > /etc/apt/apt.conf.d/00eatmydata
       echo 'DPkg::Post-Invoke { "unset LD_PRELOAD || true"; };' >> /etc/apt/apt.conf.d/00eatmydata
 
+{{ if eq $base "ubuntu" }}
+  - action: run
+    description: Add Ubuntu updates, security and backports sources
+    chroot: true
+    script: scripts/all/setup-ubuntu.sh {{ $suite }}
+{{ end }}
+
   - action: recipe
     description: Install common base packages
     recipe: distro-base.yaml
