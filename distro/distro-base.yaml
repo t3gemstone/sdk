@@ -13,6 +13,7 @@ actions:
     packages:
       - bash-completion
       - bluez
+      - btrfs-progs
       - ca-certificates
       - can-utils
       - console-setup
@@ -22,6 +23,7 @@ actions:
       - dnsmasq-base
       - dosfstools
       - ethtool
+      - fdisk
       - file
       - fuse
       - gawk

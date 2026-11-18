@@ -1,0 +1,14 @@
+[Unit]
+Description=Grow the root partition to fill the disk
+DefaultDependencies=no
+After=local-fs.target
+Before=gem-first-boot.service sysinit.target
+ConditionPathExists=!/etc/gem-grow-rootfs.isdone
+
+[Service]
+ExecStart=/usr/local/bin/gem-grow-rootfs
+Type=oneshot
+User=root
+
+[Install]
+WantedBy=sysinit.target

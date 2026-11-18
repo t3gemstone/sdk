@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Grow the root partition and its filesystem to fill the disk.
+#
+# Images are published only as large as their content, so they download and
+# flash quickly; this makes the rest of the eMMC or SD card usable on the
+# first boot. Only the last partition can grow, which root is in our layout.
+
+is_done=/etc/gem-grow-rootfs.isdone
+
+if [ -f $is_done ]; then
+    exit 0
+fi
+
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root"
+    exit 1
+fi
+
+finish() {
+    systemctl disable gem-grow-rootfs.service
+    date > $is_done
+    exit 0
+}
+
+source=$(findmnt -n -o SOURCE /)
+source=${source%%[*}                  # btrfs reports /dev/xxx[/subvolume]
+fstype=$(findmnt -n -o FSTYPE /)
+part=$(basename "$source")
+sysfs=/sys/class/block/$part
+
+if [ ! -f "$sysfs/partition" ]; then
+    echo "Root filesystem $source is not on a partition, nothing to grow"
+    finish
+fi
+
+partnum=$(cat "$sysfs/partition")
+disk=/dev/$(basename "$(readlink -f "$sysfs/..")")
+
+echo "Growing partition $partnum of $disk"
+if ! echo ", +" | sfdisk --no-reread --no-tell-kernel -N "$partnum" "$disk"; then
+    echo "Could not grow partition $partnum of $disk"
+    exit 1
+fi
+partx -u -n "$partnum" "$disk"
+
+echo "Growing $fstype filesystem on $source"
+case "$fstype" in
+    btrfs) btrfs filesystem resize max / ;;
+    ext4)  resize2fs "$source" ;;
+    *)     echo "Do not know how to grow $fstype" ;;
+esac
+
+finish

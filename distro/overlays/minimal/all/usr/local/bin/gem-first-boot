@@ -11,20 +11,12 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
-list=(
-    "sys-kernel-debug.mount"
-    "sys-kernel-tracing.mount"
-    "apt-daily.service"
-    "apt-daily.timer"
-    "apt-daily-upgrade.service"
-    "apt-daily-upgrade.timer"
-    "dpkg-db-backup.timer"
-)
-
-for i in "${list[@]}"; do
-    systemctl stop "$i"
-    systemctl disable "$i"
-done
+# One call each: a call per unit makes systemd reload its units every time
+# while NetworkManager is starting, and stopping a service before the timer
+# that triggers it makes systemctl warn.
+systemctl disable --now apt-daily.timer apt-daily-upgrade.timer dpkg-db-backup.timer
+systemctl stop apt-daily.service apt-daily-upgrade.service \
+    sys-kernel-debug.mount sys-kernel-tracing.mount
 
 configfile="/boot/config.ini"
 
@@ -66,6 +58,29 @@ method=auto
 method=auto
 EOF
             chmod 0600 "$wifi_conf_file"
+
+            # NetworkManager leaves connecting to iwd here, and iwd only joins
+            # networks it has a profile for, so give it one: with only the
+            # NetworkManager profile the board never connected on its own.
+            # iwd also takes a 64-digit PSK from there, which it rejects when
+            # NetworkManager hands it over as a passphrase. iwd names the file
+            # after the SSID, or its hex digits after "=" when the SSID has
+            # characters other than letters, digits, " ", "-" and "_".
+            # Character ranges follow the locale; compare them in C.
+            if LC_ALL=C grep -qxE '[A-Za-z0-9 _-]+' <<< "$wifiname"; then
+                iwd_name=$wifiname
+            else
+                iwd_name="=$(printf %s "$wifiname" | od -An -tx1 | tr -d ' \n')"
+            fi
+            if LC_ALL=C grep -qxE '[0-9a-fA-F]{64}' <<< "$wifipasswd"; then
+                iwd_key="PreSharedKey=$wifipasswd"
+            else
+                # iwd's settings files escape "\" and a leading space
+                iwd_key="Passphrase=$(printf %s "$wifipasswd" | sed 's/\\/\\\\/g; s/^ /\\s/')"
+            fi
+            mkdir -p -m 0700 /var/lib/iwd
+            printf '[Security]\n%s\n' "$iwd_key" > "/var/lib/iwd/$iwd_name.psk"
+            chmod 0600 "/var/lib/iwd/$iwd_name.psk"
         fi
 
         if [ -n "$wificountry" ]; then
@@ -99,7 +114,8 @@ EOF
     sed -i '/userpasswd=/d' $configfile
     sed -i '/wifiname=/d' $configfile
     sed -i '/wifipasswd=/d' $configfile
-    sed -i '/vncpasswd=/d' $configfile
+    sed -i '/vncpassword=/d' $configfile
+    sed -i '/diskpasswd=/d' $configfile
 fi
 
 systemctl disable gem-first-boot.service

@@ -4,6 +4,11 @@ on:
   pull_request_target:
     types: [labeled]
   workflow_dispatch:
+    inputs:
+      bootfiles_release:
+        description: 'Release tag holding tiboot3.bin, tispl.bin, u-boot.img and SHA256SUMS (empty = U-Boot from apt)'
+        required: false
+        default: ''
 
 env:
     RELEASE: v2026.1
@@ -66,8 +71,27 @@ jobs:
       - name: Fetch repos
         run: |
           mkdir -p "$GITHUB_WORKSPACE/.repos"
-          python -m pip install vcstool
-          vcs import --skip-existing "$GITHUB_WORKSPACE/.repos" < ${{ github.workspace }}/repos.yml
+          python -m pip install vcstool pyyaml
+          # cc33xx-fw is only installed on beagley-ai
+          python -c '
+          import sys, yaml
+          repos = yaml.safe_load(open(sys.argv[1]))
+          if sys.argv[2] != "beagley-ai":
+              repos["repositories"].pop("src/cc33xx-fw", None)
+          yaml.safe_dump(repos, sys.stdout, sort_keys=False)
+          ' "${{ github.workspace }}/repos.yml" "${{ matrix.machine }}" > "$RUNNER_TEMP/repos.yml"
+          vcs import --skip-existing "$GITHUB_WORKSPACE/.repos" < "$RUNNER_TEMP/repos.yml"
+
+      - name: Fetch boot files
+        if: inputs.bootfiles_release != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/bootfiles"
+          gh release download "${{ inputs.bootfiles_release }}" \
+            --repo "${{ github.repository }}" \
+            --dir "$GITHUB_WORKSPACE/bootfiles"
+          cd "$GITHUB_WORKSPACE/bootfiles" && sha256sum -c SHA256SUMS
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -88,7 +112,7 @@ jobs:
       - name: Run debos
         env:
           IMG_FILE_NAME: gemstone-${{ matrix.type }}-${{ env.RELEASE }}-${{ matrix.base }}-${{ matrix.suite }}-${{ matrix.machine }}.img
-          IMG_SIZE: ${{ matrix.type == 'minimal' && '1024M' || matrix.type == 'kiosk' && '4096M' || '16384M' }}
+          IMG_SIZE: ${{ matrix.type == 'minimal' && '1024M' || matrix.type == 'kiosk' && '4096M' || '5120M' }}
         run: |
           docker run --rm \
             --privileged \
@@ -116,6 +140,7 @@ jobs:
             --template-var="imagesize:${{ env.IMG_SIZE }}" \
             --template-var="arch:${{ matrix.arch }}" \
             --template-var="ci:true" \
+            --template-var="bootfiles:${{ inputs.bootfiles_release != '' && format('{0}/bootfiles', env.WORKDIR) || '' }}" \
             --verbose \
             ${{ env.WORKDIR }}/distro/distro.yaml
 
