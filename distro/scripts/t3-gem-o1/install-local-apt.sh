@@ -50,6 +50,7 @@ apt-get install -y \
     kernel-module-iptable-nat-6.12.24-ti \
     kernel-module-iptable-raw-6.12.24-ti \
     kernel-module-iptable-security-6.12.24-ti \
+    kernel-module-ipt-reject-6.12.24-ti \
     kernel-module-j721e-csi2rx-6.12.24-ti \
     kernel-module-loop-6.12.24-ti \
     kernel-module-m-can-6.12.24-ti \
@@ -100,9 +101,11 @@ apt-get install -y \
     kernel-module-wlcore-6.12.24-ti \
     kernel-module-wlcore-sdio-6.12.24-ti \
     kernel-module-xt-addrtype-6.12.24-ti \
+    kernel-module-xt-comment-6.12.24-ti \
     kernel-module-xt-conntrack-6.12.24-ti \
     kernel-module-xt-masquerade-6.12.24-ti \
     kernel-module-xt-nat-6.12.24-ti \
+    kernel-module-xt-state-6.12.24-ti \
     ti-img-rogue-driver \
     u-boot
 

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# fstab mounts /boot by filesystem UUID, but an SD card and the eMMC written
+# from the same image carry the same UUID, so with both present /boot may come
+# from the disk the board did not boot from and the first boot reads the wrong
+# config.ini. U-Boot passes the partition it booted from as bootpart=, so mount
+# that one. Units in the early directory take precedence over the fstab ones.
+
+for arg in $(cat /proc/cmdline); do
+    case "$arg" in
+        bootpart=/dev/*) bootpart="${arg#bootpart=}" ;;
+    esac
+done
+
+[ -n "$bootpart" ] || exit 0
+
+cat > "$2/boot.mount" <<UNIT
+[Unit]
+Description=Boot partition the system booted from
+Before=local-fs.target
+
+[Mount]
+What=$bootpart
+Where=/boot
+Type=vfat
+Options=defaults
+UNIT
