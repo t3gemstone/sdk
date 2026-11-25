@@ -48,6 +48,9 @@ tasks:
         if [ "{{ .ENCRYPT }}" = "true" ]; then
           task utils:encrypt-image IMG_FILE_PATH={{ .IMG_FILE_PATH }}
         fi
+    preconditions:
+      - sh: '[ "{{ .DISTRO_TYPE }}" != "test" ] || [ "{{ .MACHINE }}" = "t3-gem-o1" ]'
+        msg: "DISTRO_TYPE=test is only supported for MACHINE=t3-gem-o1"
     requires:
       vars:
         - name: MACHINE
@@ -55,7 +58,7 @@ tasks:
         - name: DISTRO_BASE
           enum: [ ubuntu, debian, pardus ]
         - name: DISTRO_TYPE
-          enum: [ minimal, kiosk, desktop, tablet ]
+          enum: [ minimal, kiosk, desktop, tablet, test ]
         - name: DISTRO_ARCH
           enum: [ arm64, amd64 ]
         - name: DISTRO_SUITE

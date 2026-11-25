@@ -218,7 +218,7 @@ actions:
     script: scripts/t3-gem-o1/install-firmware.sh {{ $workdir }} $ROOTDIR
 {{ end }}
 
-{{ if eq $type "kiosk" "desktop" "tablet" }}
+{{ if eq $type "kiosk" "desktop" "tablet" "test" }}
   - action: overlay
     source: overlays/{{ $type }}/all
     destination: /
@@ -241,6 +241,14 @@ actions:
     variables:
       arch: {{ $arch }}
       phase: postinstall
+{{ end }}
+
+{{ if eq $type "test" }}
+  - action: recipe
+    description: Test post-install (hardware test API, HAT pin test)
+    recipe: distro-test.yaml
+    variables:
+      arch: {{ $arch }}
 {{ end }}
 
 {{ if eq $machine "beagley-ai" "t3-gem-o1" }}
