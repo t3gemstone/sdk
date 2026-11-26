@@ -38,7 +38,7 @@ actions:
     suite: {{ $suite }}-deb
 {{ else }}
     components: [ main, multiverse, universe ]
-    mirror: {{ if eq $arch "amd64" }}'https://archive.ubuntu.com/ubuntu'{{ else }}'https://ports.ubuntu.com/ubuntu-ports'{{ end }}
+    mirror: {{ if eq $arch "amd64" }}'https://azure.archive.ubuntu.com/ubuntu'{{ else }}'https://ports.ubuntu.com/ubuntu-ports'{{ end }}
 {{ end }}
     exclude:
       - systemd-zram-generator

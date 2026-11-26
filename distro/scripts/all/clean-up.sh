@@ -51,6 +51,16 @@ fi
 apt-get autoremove -y
 apt-get autoclean -y
 
+# The build uses the Azure Ubuntu mirror for reliability on CI runners
+# (see setup-ubuntu.sh); ship images pointing at the canonical archive and
+# security servers.
+if [ "$DISTRO_BASE" = "ubuntu" ] && [ -f /etc/apt/sources.list ]; then
+    sed -i \
+        -e '/-security /s|https://azure\.archive\.ubuntu\.com/ubuntu|https://security.ubuntu.com/ubuntu|' \
+        -e 's|https://azure\.archive\.ubuntu\.com/ubuntu|https://archive.ubuntu.com/ubuntu|' \
+        /etc/apt/sources.list
+fi
+
 rm -f /etc/legal
 rm -f /etc/update-motd.d/10-help-text
 rm -f /etc/apt/sources.list.d/local-apt.list
