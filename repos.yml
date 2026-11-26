@@ -45,10 +45,10 @@ repositories:
     url: https://git.ti.com/git/cc33xx-wlan/cc33xx-fw.git
     version: 988ded3a7d4d0e46de62e9ebfcb685c502bd9edf
 
-  src/realtek-8822-firmware:
+  src/gemstone-firmware:
     type: git
-    url: https://github.com/t3gemstone/realtek-8822-firmware.git
-    version: de8ac2fb31a09d8acccd8fddb3d78792dafda6f0
+    url: https://github.com/t3gemstone/gemstone-firmware.git
+    version: ee4226126291dd5566a3314219db2b2f7af05d8d
 
   src/buffybox:
     type: git
