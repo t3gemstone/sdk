@@ -50,11 +50,6 @@ repositories:
     url: https://github.com/t3gemstone/realtek-8822-firmware.git
     version: de8ac2fb31a09d8acccd8fddb3d78792dafda6f0
 
-  src/firmware-o1-edge-ai:
-    type: git
-    url: https://github.com/t3gemstone/firmware-o1-edge-ai.git
-    version: 40312ba4bcddd1edfc3607e27dfa313a5d0257f8
-
   src/buffybox:
     type: git
     url: https://github.com/t3gemstone/buffybox.git
