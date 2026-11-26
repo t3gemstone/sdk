@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-    RELEASE: v2026.1
+    RELEASE: v2026.3
     WORKDIR: /home/workdir
     FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 

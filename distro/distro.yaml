@@ -11,7 +11,7 @@
 {{- $base      := or .base      "ubuntu" -}}
 {{- $type      := or .type      "minimal" -}}
 {{- $suite     := or .suite     "jammy" -}}
-{{- $release   := or .release   "v2026.2" -}}
+{{- $release   := or .release   "v2026.3" -}}
 {{- $workdir   := or .workdir   "/home/workdir" -}}
 {{- $image     := or .image     (printf "gemstone-%s-%s-%s-%s-%s.img" $type $release $base $suite $machine) -}}
 {{- $imagepath := or .imagepath (printf "%s/build/debos/%s" $workdir $image) -}}
