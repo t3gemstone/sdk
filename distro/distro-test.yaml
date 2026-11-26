@@ -1,0 +1,31 @@
+{{/* T3 Foundation Gemstone Project https://t3gemstone.org */}}
+{{/* SPDX-License-Identifier Apache-2.0 */}}
+
+{{- $arch := or .arch "arm64" -}}
+
+architecture: {{ $arch }}
+
+actions:
+
+  - action: apt
+    recommends: false
+    packages:
+      - build-essential
+      - iw
+      - pciutils
+      - python3-dev
+      - python3-pip
+      - python3-venv
+      - v4l-utils
+
+  - action: run
+    description: Create Gemstone venv with FastAPI, Uvicorn and spidev
+    chroot: true
+    command: |
+      python3 -m venv /home/gemstone/venv
+      /home/gemstone/venv/bin/pip install --no-cache-dir fastapi uvicorn spidev
+
+  - action: run
+    description: Enable hardware test API and HAT pin test services (role chosen by /home/gemstone/master)
+    chroot: true
+    command: systemctl enable gemstone-api.service pintest-slave.service pintest-master.service

@@ -51,11 +51,16 @@ user@host:$ devbox shell
 # Pack Distro
 # Note: DISTRO_BASE can be 'ubuntu', 'debian', 'pardus'
 # Note: DISTRO_SUITE can be 'jammy', 'bookworm', 'yirmiuc', 'yirmibes'
-# Note: DISTRO_TYPE can be 'minimal', 'kiosk', 'desktop', 'tablet'
+# Note: DISTRO_TYPE can be 'minimal', 'kiosk', 'desktop', 'tablet', 'test'
 🚀 distrobox:workdir> task distro:build MACHINE=intel-corei7-64 DISTRO_TYPE=desktop DISTRO_BASE=ubuntu DISTRO_SUITE=jammy IMG_SIZE=16G
 
 # Pack Pardus Tablet
 🚀 distrobox:workdir> task distro:build MACHINE=intel-corei7-64 DISTRO_TYPE=tablet DISTRO_BASE=pardus DISTRO_SUITE=yirmibes IMG_SIZE=16G
+
+# Pack T3 Gemstone O1 board test image (hardware test API + HAT pin test)
+# Note: Boards run the HAT pin test as slave by default. To make a board the master,
+#       run `touch /home/gemstone/master` on it and reboot (remove the file to go back to slave).
+🚀 distrobox:workdir> task distro:build MACHINE=t3-gem-o1 DISTRO_TYPE=test
 
 # After build images, run virtual machine
 🚀 distrobox:workdir> task yocto:runqemu MACHINE=intel-corei7-64 DISTRO_TYPE=desktop DISTRO_BASE=ubuntu DISTRO_SUITE=jammy WORKDIR=$PWD

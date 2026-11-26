@@ -1,0 +1,16 @@
+[Unit]
+Description=Gemstone kartlar arasi HAT pin testi - slave
+After=multi-user.target
+# Board role: slave by default; skipped when /home/gemstone/master exists
+# (that board runs pintest-master.service instead).
+ConditionPathExists=!/home/gemstone/master
+
+[Service]
+ExecStart=/usr/bin/python3 /home/gemstone/pintest.py slave
+Restart=on-failure
+RestartSec=3
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=multi-user.target

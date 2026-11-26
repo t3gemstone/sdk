@@ -1,0 +1,16 @@
+[Unit]
+Description=HAT Pin Test Between T3 Gemstone O1 Boards - Master
+After=multi-user.target
+# Board role: this board is the master only if /home/gemstone/master exists
+# (touch ~/master); otherwise pintest-slave.service runs instead.
+ConditionPathExists=/home/gemstone/master
+
+[Service]
+ExecStart=/usr/bin/python3 /home/gemstone/pintest.py master
+Restart=on-failure
+RestartSec=3
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=multi-user.target
